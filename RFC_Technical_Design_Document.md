@@ -1,36 +1,46 @@
 
-
 # RFC : Technical design document
 
 ## Component - Tab
 
 ### Scope of the Document
+
 This document outlines the technical design document of Tab component functionalities. Its highlights the component design, properties, and initial implementation.
 
 ### Component Overview
+
 Tabs organize and allow users to move between content without having to navigate away from a page. The Tabs component organizes multiple sections of related content so a user can view one section at a time.
 
 ### Component Design
-> Component designed based on the scope of the tab component, by default, the Tab simply renders data passed to it.  
- ### Scope  
- - Tab Container: Tab container is a component that manages the context and state of the tabs.   
- - Tab List: Wrapper for the tab components.  
- - Tab:  Element that serves as a label for one of the tab panels and can be activated to display that panel.  
- - Tab Panel: Is a presentational component which accepts a tab’s content as its children.  
 
- #### Tab Container  
-The component or element the *Tabs* should render as *Fragment*. 
+> Component designed based on the scope of the tab component, by default, the Tab simply renders data passed to it.  
+
+### Scope  
+
+- Tab Container: Tab container is a component that manages the context and state of the tabs.
+- Tab List: Wrapper for the tab components.  
+- Tab:  Element that serves as a label for one of the tab panels and can be activated to display that panel.  
+- Tab Panel: Is a presentational component which accepts a tab’s content as its children.  
+
+#### Tabs  
+
+The component or element the *Tabs* should render as *Fragment*.
 
 Provides context and state.
+
 ##### Properties
+
 | Props  | Type | Default | Required | Description |
 | :------------- |:-------------:|:-------------:|:-------------:|:-------------|
 | ClassName| Object | | | Override or extend component style.|
 | Id      | String | | | Unique identification of tabs. |
 
 #### TabList
+
 The component or element the *TabList* should render as *div*.
+
 ##### Properties
+
 | Props  | Type | Default | Required | Description |
 | :------------- |:-------------:|:-------------:|:-------------:|:-------------|
 | ClassName| Object | | | Override or extend component style.|
@@ -45,7 +55,9 @@ The component or element the *TabList* should render as *div*.
 
 The component or element the ‘**_Tab’_** should render as ‘**_button’._**
 Children of Tablist component, display based on label, by default index is 0
+
 ##### Properties
+
 | Props  | Type | Default | Required | Description |
 | :------------- |:-------------:|:-------------:|:-------------:|:-------------|
 | Active| Boolean | | | Selected, Unselected flag, based on this flag active tab.|
@@ -55,76 +67,80 @@ Children of Tablist component, display based on label, by default index is 0
 | ClassName      | Object | | =Orientation| Override or extend component style. |
 
 #### TabPanel
+
 The component or element the ‘**_TabPanel’_** should render as ‘**_div’._**
 
 element that contains the content associated with a tab
+
 ##### Properties
+
 | Props  | Type | Default | Required | Description |
 | :------------- |:-------------:|:-------------:|:-------------:|:-------------|
 | ClassName| Object | | | Override or extend component style.|
 | Id      | String | | | Unique identification of tabs. |
 | Children      | Node | | | Override or extend component style. |
 
- ### Design Flow
+### Design Flow
+
  <img width="578" alt="image" src="https://user-images.githubusercontent.com/25932161/137789481-c6078525-413c-47b8-b520-498934b99f6b.png">
 
-
 ### Component Style
+
 #### Mixings
 
- - nds—tabs (base)
- - nds-tabs__tablist
- - nds-tabs__tabpanel
- - nds—tabs__tab
+- nds—tabs (base)
+- nds-tabs__tablist
+- nds-tabs__tabpanel
+- nds—tabs__tab
 
 ### Keyboard Intraction
 
 | Key  | Action|
 | :------------- |:-------------|
-| ArrowLeft| Move focus to previous column. | 
-| ArrowRight| Move focus to next column. | 
-|Tab	| Focus moves into the tablist from the place of active tab.
-|Space or Enter	| Activate tab if tabs are not activated.
-|Home	| Focus move to first tab.
-|End	| Focus moves to last tab.
+| ArrowLeft| Move focus to previous column. |
+| ArrowRight| Move focus to next column. |
+|Tab | Focus moves into the tablist from the place of active tab.
+|Space or Enter | Activate tab if tabs are not activated.
+|Home | Focus move to first tab.
+|End | Focus moves to last tab.
 
 ## Accessibility
 
 ### ARIA Roles
+
 #### Tab
 
 | Role  | Description|
 | :------------- |:-------------|
-| role=”tab”| Indicate that is tab. | 
-| aria-selected| Set for active tab. | 
-|aria-control	| Set associate idb.
+| role=”tab”| Indicate that is tab. |
+| aria-selected| Set for active tab. |
+|aria-control | Set associate idb.
 
 #### TabList
 
 | Role  | Description|
 | :------------- |:-------------|
-| role=”tablist”| Indicate that is tablist. | 
-| aria-orientation| Indicate horizontally or vertically tab. | 
+| role=”tablist”| Indicate that is tablist. |
+| aria-orientation| Indicate horizontally or vertically tab. |
 
-## Implementation example 
-
+## Implementation example
 
     <Tabs index={tabIndex} onSelect={handleTabsChange}>
-	    <TabList>
-		    <Tab>One</Tab>
-		    <Tab>Two</Tab>
-		    <Tab>Three</Tab>
-	    </TabList>
-	    <TabPanel>	
-		    <span>This is tab one</span>
-	   </TabPanel>
-	   <TabPanel>
-		   <p>This is tab two</p>
-	   </TabPanel>
-	   <TabPanel>
-		   <div>This is tab three. </div>
-	   </TabPanel>
-	</Tabs>
+     <TabList>
+      <Tab>One</Tab>
+      <Tab>Two</Tab>
+      <Tab>Three</Tab>
+     </TabList>
+     <TabPanel> 
+      <span>This is tab one</span>
+    </TabPanel>
+    <TabPanel>
+     <p>This is tab two</p>
+    </TabPanel>
+    <TabPanel>
+     <div>This is tab three. </div>
+    </TabPanel>
+ </Tabs>
 
 ## Component render example
 
@@ -146,9 +162,9 @@ element that contains the content associated with a tab
     </ Fragment >
 
 ### Anatomy document
+
 [https://docs.google.com/document/d/1D0MjvCYdCaaHDJGYcPk8u9pSREkVpAac8JqNYzviHc0/edit#heading=h.5old1136lvpw](https://docs.google.com/document/d/1D0MjvCYdCaaHDJGYcPk8u9pSREkVpAac8JqNYzviHc0/edit#heading=h.5old1136lvpw)
 
 ### Refs
-https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html
 
-
+<https://www.w3.org/TR/wai-aria-practices-1.1/examples/tabs/tabs-1/tabs.html>
