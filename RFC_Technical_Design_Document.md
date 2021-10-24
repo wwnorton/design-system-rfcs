@@ -77,12 +77,12 @@ element that contains the content associated with a tab
 | Props  | Type | Default | Required | Description |
 | :------------- |:-------------:|:-------------:|:-------------:|:-------------|
 | ClassName| Object | | | Override or extend component style.|
-| Id      | String | | | Unique identification of tabs. |
-| Children      | Node | | | Override or extend component style. |
+| Id      | String | | | Unique identification of tabpanel. |
+| Children      | Node | | | Any component or element. |
 
 ### Design Flow
 
- <img width="578" alt="image" src="https://user-images.githubusercontent.com/25932161/137789481-c6078525-413c-47b8-b520-498934b99f6b.png">
+ <img width="596" alt="image" src="https://user-images.githubusercontent.com/25932161/138617008-1f0f2e72-e5da-4d7c-882d-496c9ca21635.png">
 
 ### Component Style
 
@@ -97,8 +97,8 @@ element that contains the content associated with a tab
 
 | Key  | Action|
 | :------------- |:-------------|
-| ArrowLeft| Move focus to previous column. |
-| ArrowRight| Move focus to next column. |
+| ArrowLeft| Move focus to previous tab. |
+| ArrowRight| Move focus to next tab. |
 |Tab | Focus moves into the tablist from the place of active tab.
 |Space or Enter | Activate tab if tabs are not activated.
 |Home | Focus move to first tab.
@@ -114,7 +114,7 @@ element that contains the content associated with a tab
 | :------------- |:-------------|
 | role=”tab”| Indicate that is tab. |
 | aria-selected| Set for active tab. |
-|aria-control | Set associate idb.
+| aria-control | Set associate id.
 
 #### TabList
 
@@ -122,6 +122,13 @@ element that contains the content associated with a tab
 | :------------- |:-------------|
 | role=”tablist”| Indicate that is tablist. |
 | aria-orientation| Indicate horizontally or vertically tab. |
+
+#### TabPanel
+
+| Role  | Description|
+| :------------- |:-------------|
+| role=”tabpanel”| Indicate that is tabpanel. |
+| aria-label| may be used on any element, not just labelable elements. |
 
 ## Implementation example
 
