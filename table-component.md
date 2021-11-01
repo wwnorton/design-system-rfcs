@@ -5,7 +5,7 @@
 
 ## Summary
 
-Table component is a web component that enables you to create rows and columns of known data. Table components consist of as many columns and rows you need, with the column being used to specify the type of values like text, number, date or custom and the rows being used to contain the values themselves. Table also have a requirement that you choose at least two columns in the table. Now a day most of the applications expecting data table, this table component alsow work as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
+Table component is a web component that enables you to create rows and columns of known data. Table components consist of as many columns and rows you need, with the column being used to specify the type of values like text, number, date or custom and the rows being used to contain the values themselves.Tables must have at least 2 columns. Now a day most of the applications expecting data table, this table component also work as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
 
 - `<Table>`        - A table with one header and simple data are fairly accessible out of the box and may not need additional accessibility updates.
 - `<TableHeader>`  - Is a row at the top of a table contains column title, with sorting, title, sticky header properties.
@@ -150,9 +150,9 @@ Table cell use in header element.
 
 ## Drawbacks
 
-- Not supporting pagging.
-- Not supporting column filter but developer can write won filters using cellFormatter.
-- Not supporting nestead table.
+- Not supporting paging.
+- Not supporting column filter but developer can write own filters using cellFormatter.
+- Not supporting nested table.
 - Not supporting virtual scrolling.
 
 ## Alternatives
