@@ -78,9 +78,16 @@ There are tradeoffs to choosing any path, please attempt to identify them here.
 What other designs have been considered?
 Is there a way for developers to do this without this component?
 
+Please focus on alternative ways to design the component, rather than alternative solutions that exist in other libraries.
+There are two reasons you might mention another library:
+
+1. Extending another library is a viable or expected alternative. If that's the case, explain why it wasn't pursued. Don't just list it as an alternative.
+2. Another library uses an idiomatic design that was considered but ultimately not used. If that's the case, focus your explanation on why the design wasn't chosen and reference the library, but don't focus on it.
+
 ## Adoption strategy
 
 If we implement this proposal, how will existing applications adopt it?
+Focus on how applications might use it or migrate to it rather than which applications might use it.
 
 ## Unresolved questions
 
