@@ -22,7 +22,7 @@ A good approach is to explain the proposal as if it was already part of the Nort
 That generally means:
 
 - Introducing any new components and props.
-    - Note: names may undergo many changes ([naming is hard](https://www.karlton.org/2017/12/naming-things-hard/)), but the description of functionality should be stable.
+  - Note: names may undergo many changes ([naming is hard](https://www.karlton.org/2017/12/naming-things-hard/)), but the description of functionality should be stable.
 - Explaining the component largely in terms of examples of how someone would use it (not its internals).
 - Explaining how developers would use the component to compose more complex interfaces, and how it should impact the way they think about composition.
 - If applicable, provide sample error messages, deprecation warnings, or migration guidance.
@@ -40,11 +40,11 @@ Component API designs should include at least:
 1. Any interface(s) that it extends, and an brief explanation of why. If it doesn't extend any interfaces, state that explicitly.
    - For example, "`<ComponentOne>` extends the `React.InputHTMLAttributes<HTMLInputElement>` interface."
 1. All props that are not part of the extended interface.
-    - If an inherited prop is customized or changed in some way, that must be included here.
-    - Mention if the semantics of a prop are similar to other concepts or props used elsewhere in the design system.
+   - If an inherited prop is customized or changed in some way, that must be included here.
+   - Mention if the semantics of a prop are similar to other concepts or props used elsewhere in the design system.
 1. Required or relevant HTML or ARIA attributes such as [`disabled`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) or [`role`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles).
-    - Tip: closely review related [ARIA Authoring Practices](https://w3c.github.io/aria-practices/) patterns to help identify relevant semantics.
-1. Example(s) of what HTML should render. The user experiences the HTML, not the React code, so include 
+   - Tip: closely review related [ARIA Authoring Practices](https://w3c.github.io/aria-practices/) patterns to help identify relevant semantics.
+1. Example(s) of what HTML should render. The user experiences the HTML, not the React code, so include
 
 For instance:
 
