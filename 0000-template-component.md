@@ -46,11 +46,22 @@ Component API designs should include at least:
     - Tip: closely review related [ARIA Authoring Practices](https://w3c.github.io/aria-practices/) patterns to help identify relevant semantics.
 1. Example(s) of what HTML should render. The user experiences the HTML, not the React code, so include 
 
-For instance: `<ComponentOne>` extends the `React.InputHTMLAttributes<HTMLInputElement>` and adds the following properties:
+For instance:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `isOpen` | Indicates whether the component is open. | `false`  | `undefined` |
+`<ComponentOne>` extends the `React.InputHTMLAttributes<HTMLInputElement>` and adds the following properties:
+
+| Name     | Type      | Description                              | Required | Default     |
+| -------- | --------- | ---------------------------------------- | -------- | ----------- |
+| `isOpen` | `boolean` | Indicates whether the component is open. | `false`  | `undefined` |
+
+Alternatively, you could use TypeScript to capture all the same information in an interface or type:
+
+```tsx
+interface ComponentOneProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    /** Indicates whether the component is open. */
+    isOpen?: boolean;
+}
+```
 
 ## Drawbacks
 
