@@ -83,6 +83,45 @@ For instance: `<Combobox>` extends the `React.DivHTMLAttributes<HTMLDivElement>`
 </Combobox>
 ```
 
+### Datasource Structure
+
+##### Strings Array
+
+```
+[ 'Cat', 'Dog', '🐠 Fish' ]
+```
+##### Object
+
+```
+{
+	Dog: 'dog',
+	Cat: 'cat',
+	Hamster: 'hamster',
+	Parrot: 'parrot',
+	Spider: 'spider',
+	Fish: 'fish'
+}
+```
+##### Object Array
+
+```
+[
+	{
+		value: 'dog',
+		label: '🐶 Dog'
+	},
+	{
+		value: 'cat',
+		label: '🐱 Cat'
+	},
+	{
+		value: 'hamster',
+		label: '🐹 Hamster'
+	}
+]
+```
+
+
 ## Drawbacks
 
 Why should we not do this? Please consider:
