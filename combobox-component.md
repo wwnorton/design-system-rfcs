@@ -20,22 +20,22 @@ The `Combobox` component contains new sub-components that are part of the conten
 
 ### Combobox
 
-For instance: `<Combobox>` extends the `React.DivHTMLAttributes<HTMLDivElement>` and adds the following properties:
+For instance: `<Combobox>` extends the `React.HTMLAttributes<HTMLDivElement>` and adds the following properties:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `allowClear` | If set, the `input` renders the clear button. | `false`  | `false` |
-| `autoFocus` | If set, the focusable `input` should be focused when it is rendered. | `false`  | `false` |
-| `defaultValue` | Initial selected option(s). | `false`  | `""` |
-| `value` | Selected option(s). | `false`  | `""` |
-| `multiselectable` | Indicates that more than one option can be selected. | `false`  | `false` |
-| `variant` | Indicates the type of list to render `listbox` or `checkboxes`, only works if the `multiselectable` attribute is active. | `false`  | `listbox` |
-| `options` | A list of options as either an array of `value` props. | `true`  | `[]` |
-| `selected` | The currently selected value(s). | `true`  | `[]` |
-| `notFoundContent` | Text displayed when no matches are found in search. | `true`  | `No results were found` |
-| `isOpen` | Indicates whether the `listbox` is rendered or not. | `false`  | `false` |
-| `onSelect` | Called when a option is selected/unselected. | `false`  | `function(value, option)` |
-| `onClear` | Called when the `clearButton` is clicked. | `false`  | `() => {}` |
+| Name     | Type      | Description                              | Required | Default     |
+| -------- | --------- | ---------------------------------------- | -------- | ----------- |
+| `allowClear` | `boolean` | If set, the `input` renders the clear button. | `false`  | `false` |
+| `autoFocus` | `boolean` | If set, the focusable `input` should be focused when it is rendered. | `false`  | `false` |
+| `defaultValue` | `string[]`, `number[]` | Initial selected option(s). | `false`  | `""` |
+| `value` | `string[]`, `number[]` | Selected option(s). | `false`  | `""` |
+| `multiselectable` | `boolean` | Indicates that more than one option can be selected. | `false`  | `false` |
+| `variant` |  `string` | Indicates the type of list to render `listbox` or `checkboxes`, only works if the `multiselectable` attribute is active. | `false`  | `listbox` |
+| `options` | `string[]`, `object`, `object[]` |  A list of options as either an array of `value` props. | `true`  | `[]` |
+| `selected` | `string[]` |  The currently selected value(s). | `true`  | `[]` |
+| `notFoundContent` | `string` |  Text displayed when no matches are found in search. | `true`  | `No results were found` |
+| `isOpen` | `boolean` |  Indicates whether the `listbox` is rendered or not. | `false`  | `false` |
+| `onSelect` | `function` | Called when a option is selected/unselected. | `false`  | `function(value, option)` |
+| `onClear` |  `function` | Called when the `clearButton` is clicked. | `false`  | `() => {}` |
 
 #### Render Examples
 ##### Single selection
@@ -82,7 +82,30 @@ For instance: `<Combobox>` extends the `React.DivHTMLAttributes<HTMLDivElement>`
 	</CheckboxGroup>
 </Combobox>
 ```
+### TextField
 
+For instance: `<TextField>` extends the `React.InputHTMLAttributes<HTMLInputElement>`, for the combobox component, we will use the current `TextFieldProps` API, but some properties that prevent direct use in the `TextField` component will be omitted.
+
+#### Interface
+```
+Omit<TextFieldProps, 'type' | 'addonBefore' | 'addonAfter' | 'multiline' 'autoSize'>
+```
+### Listbox
+
+For instance: `<Listbox>` extends the `React.HTMLAttributes<HTMLUListElement>`, for the combobox component, we will use the current `ListboxProps` API, but some properties that prevent direct use in the `Listbox` component will be omitted.
+
+#### Interface
+```
+Omit<ListboxProps, 'multiselectable'>
+```
+### ChecboxGroup
+
+For instance: `<CheckboxGroup>` extends the `React.InputHTMLAttributes<HTMLInputElement>`, for the combobox component, we will use the current `ChoiceFieldProps` API, but some properties that prevent direct use in the `CheckboxGroup` component will be omitted.
+
+#### Interface
+```
+Omit<ChoiceFieldProps, 'multiple'>
+```
 ### Datasource Structure
 
 ##### Strings Array
