@@ -1,49 +1,71 @@
 - Start Date: 2021-10-01
-- Specification: ([Table](<https://wwnorton1.sharepoint.com/:w:/g/DP/products_and_projects/nds/EUXxmi6yZvBLiSLZLKo7M2cBuFiWRXtQ_lM1_OW0Smm5mQ?e=nutOb4>))
+- Specification: ([Table](https://docs.google.com/document/d/1YPO3KZNZkY3amEK2xtpSND4ajHXzms_FrTwZ3TQWnWw/edit))
 - Design: ([Table](https://app.zeplin.io/project/5d66e28439bbe3139aa846ad/screen/6148d737ee5b5557ca49792c))
 - RFC PR:
 
 ## Summary
 
-Table component is a web component that enables you to create rows and columns of known data. Table components consist of as many columns and rows you need, with the column being used to specify the type of values like text, number, date or custom and the rows being used to contain the values themselves.Tables must have at least 2 columns. Now a day most of the applications expecting data table, this table component also work as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
+Use a table to organize and display long lists of data or content, or to help users find a specific piece of information in a large data set. If a table has no content, it will display an empty state or will not display the table at all. Table content Text, Numbers, Checkboxes or radio buttons or custom content, such as buttons.
+Tables must have at least 2 columns. Column titles in the header as short as possible, but will be auto wrap to 2 rows and then truncate if necessary.Table content will be ideally fit on one row but may wrap to multiple lines. Column titles will be accurately label the data within the column, and include units of measurement in the column title if applicable. Now a day most of the applications expecting data table, this table component also works as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
 
-- `<Table>`        - A table with one header and simple data are fairly accessible out of the box and may not need additional accessibility updates.
-- `<TableHeader>`  - Is a row at the top of a table contains column title, with sorting, sticky header properties.
-- `<TableRow>`     - A table row can contain as many cells as required, each one defined in a different column. There must be at least one column defined.
-- `<TableCell>`    - This should contain the data or information required for each relevant column and row.
+- `<Table>`        - A table allows users to view data organized in rows and columns and in some cases perform actions on it.
+- `<TableHeader>`  - The first row of a table contains cells that act as labels for the columns..
+- `<TableRow>`     - A horizontal slice of the table groups related cells.
+- `<TableCell>`    - A vertical slice of the table groups cells related by the label in the header cell.
 
 ## Detailed design
 
 ### Table
 
-`<Table>` extends the `React.forwardRef<HTMLTableElement>` following are properties:
+`<Table>` extends the `React.TableHTMLAttributes<HTMLTableElement>` following are properties:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `TableHeader` | Top row component. | `false`  | `undefined` |
-| `TableRow` | Element defines a row of cells | `false`  | `undefined` |
-| `DataSource` | Indicates array of JSON formatted row data | `false`  | `undefined` |
-| `DataColumn` | Indicates array of JSON formatted column data | `false`  | `undefined` |
-| `ClassName` | Override or extend existing table style.  | `false`  | `undefined` |
-| `Border` | Indicates whether table with or without border. | `false`  | `undefined` |
-| `Sort` | Indicates support of sort by column. | `false`  | `undefined` |
-| `NoDataLabel` | Display label when no data. | `false`  | `undefined` |
+| Name     | Type | Description                              | Required | Default     |
+| -------- | ----- | ----------------------------------- | -------- | ----------- |
+| `tableHeader` | Node | Top row component. | `false`  | `undefined` |
+| `tableRow` | Node | Element defines a row of cells | `false`  | `undefined` |
+| `dataSource` | JSON | Indicates array of JSON formatted row data | `false`  | `undefined` |
+| `dataColumn` | JSON | Indicates array of JSON formatted column data | `false`  | `undefined` |
+| `className` | String | Override or extend existing table style.  | `false`  | `undefined` |
+| `border` | Boolean | Indicates whether table with or without border. | `false`  | `undefined` |
+| `sort` | Boolean | Sortable header maintain current sort state, which can be ascending, descending, or unsorted. | `false`  | `undefined` |
+
+### JSX Example
+
+```
+<Table>
+  <TableHeader>
+      <TableCell>First Name</TableCell>
+      <TableCell>Last Name</TableCell>
+  </TableHeader>
+  <TableRow>
+    <TableCell>Marissa</TableCell>
+    <TableCell>Keep</TableCell>
+  </TableRow>
+  <TableRow>
+    <TableCell>Andrew</TableCell>
+    <TableCell>Arnold</TableCell>
+  </TableRow>
+</Table>
+```
 
 #### Render Example
 
 ```
 <table>  
- <thead>    
-  <tr>      
-   <th></th>      
-   <th colspan="2"></th>    
-  </tr>  
- </thead>  
-  <tr>   
-    <th scope="row"></th>    
-   <td></td>    
-   <td></td>  
-  </tr>
+    <thead>    
+        <tr>      
+            <th>First Name</th>      
+            <th>Last Name</th>    
+        </tr>  
+    </thead>  
+    <tr>   
+        <td>Marissa</td>    
+        <td>Keep</td>  
+    </tr>
+    <tr>   
+        <td>Andrew</td>    
+        <td>Arnold</td>  
+    </tr>
 </table>
 ```
 
@@ -54,13 +76,13 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 ```
 [
    {
-    name: "User Name",
-    rowKey: "userName",
+    name: "First Name",
+    rowKey: "firstName",
    },
    {
-    name: "Address",
-    rowKey: "address",
-    cellFormatter: row => <AddressFormate row={row} />,
+    name: "Last Name",
+    rowKey: "lastName",
+    cellFormatter: row => <LastNameFormatter row={row} />,
    }
 ]
 ```
@@ -70,26 +92,26 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 ```
 [
     {
-        userName: "Marissa Keep",
-        address: "306 Campbell Hall, Michigan State University",
+        firstName: "Marissa",
+        lastName: "Keep",
     },
-    {
-        userName: "John Smith",
-        dataColumn: "21 2nd Street, New York"
-   }
+     {
+        firstName: "Andrew",
+        lastName: "Arnold",
+    }
 ]
 ```
 
 ### TableHeader
 
-`<TableHeader>` extends the `React.forwardRef<HTMLTableRowElement>` following are properties:
+`<TableHeader>` extends the `React.TableHTMLAttributes<HTMLTableSectionElement>` following are properties:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `TableCell` | Element defines a cell of data in a table. | `false`  | `undefined` |
-| `Variant` | Define header style Ghost, Outline and Solid. | `false`  | `Solid` |
-| `StickyHeader` | Indicates whether the table header is sticky. | `false`  | `undefined` |
-| `ClassName` | Override or extend existing table style. | `false`  | `undefined` |
+| Name     | Type | Description                              | Required | Default     |
+| -------- |--| --------------------------------------- | -------- | ----------- |
+| `tableCell` | Node | Element defines a cell of data in a table. | `false`  | `undefined` |
+| `variant` | Variant|  Define header style Ghost, Outline and Solid. | `false`  | `Solid` |
+| `stickyHeader` | Boolean| Indicates whether the table header is sticky. | `false`  | `undefined` |
+| `className` |String | Override or extend existing table style. | `false`  | `undefined` |
 
 #### Render Example
 
@@ -104,13 +126,13 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 
 ### TableRow
 
-`<TableRow>` extends the `React.forwardRef<HTMLTableRowElement>` following are properties:
+`<TableRow>` extends the `React.TableHTMLAttributes<HTMLTableRowElement>` following are properties:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `TableCell` | Element defines a cell of data in a table. | `false`  | `undefined` |
-| `ClassName` | Override or extend existing table style. | `false`  | `undefined` |
-| `DataColumn` | Indicates array of JSON formatted column data | `false`  | `undefined` |
+| Name     | Type | Description                              | Required | Default     |
+| -------- | ---| ------------------------------------- | -------- | ----------- |
+| `tableCell` | Node | Element defines a cell of data in a table. | `false`  | `undefined` |
+| `className` | String | Override or extend existing table style. | `false`  | `undefined` |
+| `dataColumn` | JSON | Indicates array of JSON formatted column data | `false`  | `undefined` |
 
 #### Render Example
 
@@ -124,17 +146,17 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 
 ### TableCell
 
-`<TableCell>` extends the `React.forwardRef<HTMLTableColElement>` following are properties:
+`<TableCell>` extends the `React.TableHTMLAttributes<HTMLTableColElement>` following are properties:
 
-| Name     | Description                              | Required | Default     |
-| -------- | ---------------------------------------- | -------- | ----------- |
-| `ColSpan` | Specifies the number of columns a cell should span. | `false`  | `undefined` |
-| `Header` | Indicates a cell is header, header converts in `<th>` by default `<td>` | `false`  | `<td>` |
-| `ClassName` | Override or extend existing table style. | `false`  | `undefined` |
-| `Alignment` | Indicates cell alignment. | `false`  | `Left` |
-| `Type` | Indicates cell type whether `Text,Number,Date,Boolean,Custom` | `false`  | `Text`  |
-| `CellFormatter` | Indicates React component or string. | `false`  | `undefined` |
-| `Data` | Indicates array of JSON formatted data | `false`  | `undefined` |
+| Name     | Type | Description                              | Required | Default     |
+| -------- | -- |---------------------------------------- | -------- | ----------- |
+| `colSpan` | Number | Specifies the number of columns a cell should span. | `false`  | `undefined` |
+| `header` | Boolean | Indicates a cell is header, header converts in `<th>` by default `<td>` | `false`  | `<td>` |
+| `className` | String | Override or extend existing table style. | `false`  | `undefined` |
+| `alignment` | Variant | Indicates cell alignment. | `false`  | `Left` |
+| `type` | Variant | Indicates cell type whether `Text,Number,Date,Boolean,Custom` | `false`  | `Text`  |
+| `cellFormatter` | Callback | Indicates React component or string. | `false`  | `undefined` |
+| `data` | JSON | Indicates array of JSON formatted data | `false`  | `undefined` |
 
 #### Render Example
 
@@ -150,10 +172,10 @@ Table cell use in header element.
 
 ## Drawbacks
 
-- Not supporting paging.
-- Not supporting column filter but developer can write own filters using cellFormatter.
-- Not supporting nested table.
-- Not supporting virtual scrolling.
+Why should we not do this? Please consider:
+
+- Pagination is not supported in this version may be in a future version we will support, but for the workaround developer can implement their own pagination as per the application design when uses data table.
+- Column level filters are not supported but developer can write their own filters using cellFormatter.
 
 ## Alternatives
 
@@ -166,12 +188,66 @@ There are many alternatives avalible in the market.
 
 ## Adoption strategy
 
-A purpose of this table maintains uniformity in Norton applications. Following are application where we can replace existing third party tables.
+This component considering all the existing application and trying to adopt common features of the table.
+Following are the features application can adopt.
 
-- SW5
-- Helpdesk
-- Testmaker
+- Effortless style (zero CSS changes) for Norton applications.
+- Existing style can be overridden using tokens.
+- Sorting enabled without zero code work by default for all the columns.
+
+    ```
+    <Table sort>
+        <TableHeader>
+            <TableCell>First Name</TableCell>
+            <TableCell>Last Name</TableCell>
+        </TableHeader>
+        <TableRow>
+            <TableCell>Marissa</TableCell>
+            <TableCell>Keep</TableCell>
+        </TableRow>
+        <TableRow>
+            <TableCell>Andrew</TableCell>
+            <TableCell>Arnold</TableCell>
+        </TableRow>
+    </Table>
+    ```
+
+- Sorting can hide for specific column(s).
+
+    ```
+        [
+        {
+            name: "First Name",
+            rowKey: "firstName",
+            sort: false
+        },
+        {
+            name: "Last Name",
+            rowKey: "lastName",
+            cellFormatter: row => <LastNameFormatter row={row} />,
+        }
+        ]
+    ```
+
+- As per the application's requirements cell can be formatted using ```cellFormatter```
+- By default, all the cells values are left align but as per the column type cell values can auto align.
+
+    ```
+        [
+        {
+            name: "User Name",
+            rowKey: "userName",
+        },
+        {
+            name: "Experience",
+            rowKey: "exp",
+            type: 'number' // This column is right align.
+        }
+        ]
+    ```
+
+- Easy to customize.
 
 ## Unresolved questions
 
-What are the expected events.
+Events are in TBD
