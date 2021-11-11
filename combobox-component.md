@@ -144,7 +144,69 @@ Omit<ChoiceFieldProps, 'multiple'>
 ]
 ```
 
+### Accessibility
+#### List Autocomplete with Automatic Selection
 
+List autocomplete with automatic selection means that:
+
+1. When the listbox popup is displayed, it contains suggested values that complete or logically correspond to the characters typed in the textbox. In this implementation, the values in the listbox have names that start with the characters typed in the textbox.
+2. The first suggestion is automatically highlighted as selected.
+3. The automatically selected suggestion becomes the value of the textbox when the combobox loses focus unless the user chooses a different suggestion or changes the character string in the textbox.
+
+#### Keyboard Support
+##### Textbox
+
+| Key | Function |
+| --- | --- |
+|` Down Arrow` | * If the listbox is displayed:<br/> * Example 1: Moves focus to the first suggested value.<br/>    * Examples 2 and 3: Moves focus to the second suggested value. Note that the first value is automatically selected.<br/>* If the listbox is not displayed, in example 3 only, opens the listbox and moves focus to the first value. |
+| `Up Arrow` | * If the listbox is displayed, moves focus to the last suggested value.<br/>* If the listbox is not displayed, in example 3 only, opens the listbox and moves focus to the last value. |
+| `Enter` | * Example 1: Does nothing.<br/>* Examples 2 and 3: If the listbox is displayed and the first option is automatically selected:<br/>    * Sets the textbox value to the content of the selected option.<br/>    * Closes the listbox. |
+| `Escape` | * Clears the textbox<br/>* If the listbox is displayed, closes it. |
+| `Standard single line text editing keys` | * Keys used for cursor movement and text manipulation, such as Delete and Shift + Right Arrow.<br/>* An HTML `input` with `type=text` is used for the textbox so the browser will provide platform-specific editing keys. |
+
+#### Listbox Popup
+
+| Key | Function |
+| --- | --- |
+| `Enter` | * Sets the textbox value to the content of the focused option in the listbox.<br/>* Closes the listbox.<br/>* Sets focus on the textbox. |
+| `Escape` | * Closes the listbox.<br/>* Sets focus on the textbox.<br/>* Clears the textbox. |
+| `Down Arrow` | * Moves focus to the next option.<br/>* If focus is on the last option, moves focus to the first option.<br/>* Note: This wrapping behavior is useful when Home and End move the editing cursor as described below. |
+| `Up Arrow` | * Moves focus to the previous option.<br/>* If focus is on the first option, moves focus to the last option.<br/>* Note: This wrapping behavior is useful when Home and End move the editing cursor as described below. |
+| `Right Arrow` | Moves focus to the textbox and moves the editing cursor one character to the right. |
+| `Left Arrow` | Moves focus to the textbox and moves the editing cursor one character to the left. |
+| `Home` | Moves focus to the textbox and places the editing cursor at the beginning of the field. |
+| `End` | Moves focus to the textbox and places the editing cursor at the end of the field. |
+| `Printable Characters `| * Moves focus to the textbox.<br/>* Types the character in the textbox. |
+
+#### Role, Property, State, and Tabindex Attributes
+
+##### Combobox
+
+| Role | Attribute | Element | Usage |
+| --- | --- | --- | --- |
+| `combobox` |     | `div` | * Identifies the element as a combobox.<br/>* Note:<br/>    * Unlike this ARIA 1.1 combobox, an ARIA 1.0 pattern would have the `combobox` role on the textbox input instead of a parent container of the textbox.<br/>    * The ARIA 1.1 pattern demonstrated on this page enables screen reader users to perceive both the input and the popup when using reading mode (see note below about aria-owns). |
+|     | `aria-haspopup=listbox` | `div` | * Indicates that the combobox can popup a `listbox` to suggest values.<br/>* This is the default value for elements with the `combobox` role. |
+|     | `aria-owns=IDREF` | `div` | * Refers to the element that serves as the listbox popup.<br/>* Tells browsers to arrange the screen reader reading order so the listbox, when it is visible, immediately follows the other elements inside the combobox, regardless of where the listbox element is in the DOM. |
+|     | `aria-expanded=false` | `div` | Indicates that the popup element **is not** displayed. |
+|     | `aria-expanded=true` | `div` | Indicates that the popup element **is** displayed. |
+
+##### Textbox
+| Role | Attribute | Element | Usage |
+| --- | --- | --- | --- |
+|     | `id="string"` | `input[type="text"]` | * Referenced by `for` attribute of `label` element to provide an accessible label.<br/>* Recommended labeling method for HTML input elements so clicking label focuses input. |
+|     | `aria-autocomplete=list` | `input[type="text"]` | Examples 1 and 2: Indicates that the autocomplete behavior of the text input is to suggest a list of possible values in a popup and that the suggestions are related to the string that is present in the textbox. |
+|     | `aria-autocomplete=both` | `input[type="text"]` | Example 3: Indicates that the autocomplete behavior of the text input is to both show an inline completion string and suggest a list of possible values in a popup where the suggestions are related to the string that is present in the textbox. |
+|     | `aria-controls=IDREF` | `input[type="text"]` | * Identifies the popup element that lists suggested values.<br/>* Note:<br/>    * In the ARIA 1.0 combobox pattern, the textbox has `aria-owns` instead of `aria-controls`.<br/>    * In this ARIA 1.1 pattern, `aria-owns` is instead on the parent container so the popup element is a sibling of the textbox instead of a child of the textbox, making it perceivable by screen reader users as an element adjacent to the textbox when using a reading cursor or touch interface. |
+|     | `aria-activedescendant=IDREF` | `input[type="text"]` | * When an option in the listbox is visually indicated as having keyboard focus, refers to that option.<br/>* When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value.<br/>* Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the `input` element.<br/>* For more information about this focus management technique, see [Using aria-activedescendant to Manage Focus.](../../../#kbd_focus_activedescendant) |
+
+##### Listbox popup
+
+| Role | Attribute | Element | Usage |
+| --- | --- | --- | --- |
+| `listbox` |     | `ul` | Identifies the `ul` element as a `listbox`. |
+|     | `aria-labelledby=IDREF` | `ul` | Provides a label for the `listbox` element of the combobox. |
+| `option` |     | `li` | * Identifies the element as a `listbox` `option`.<br/>* The text content of the element provides the accessible name of the `option`. |
+|     | `aria-selected=true` | `li` | * Specified on an option in the listbox when it is visually highlighted as selected.<br/>* In example 1, occurs only when an option in the list is referenced by `aria-activedescendant`.<br/>* In examples 2 and 3, also occurs when focus is in the textbox and the first option is automatically selected. |
 ## Drawbacks
 
 Why should we not do this? Please consider:
