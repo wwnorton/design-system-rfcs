@@ -5,8 +5,8 @@
 
 ## Summary
 
-Use a table to organize and display long lists of data or content, or to help users find a specific piece of information in a large data set. If a table has no content, it will display an empty state or will not display the table at all. Table content Text, Numbers, Checkboxes or radio buttons or custom content, such as buttons.
-Tables must have at least 2 columns. Column titles in the header as short as possible, but will be auto wrap to 2 rows and then truncate if necessary.Table content will be ideally fit on one row but may wrap to multiple lines. Column titles will be accurately label the data within the column, and include units of measurement in the column title if applicable. Now a day most of the applications expecting data table, this table component also works as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
+Use a table to organize and display long lists of data or content, or to help users find a specific piece of information in a large data set. If a table has no content, it will display an empty state or will not display the table at all. A table's content may include Text, Numbers, Checkboxes or radio buttons or custom content, such as buttons.
+Tables must have at least 2 columns.Column titles in the header row should be as short as possible, but can wrap to a 2nd row and then truncate if necessary. Table content will be ideally fit on one row but may wrap to multiple lines. Column titles will be accurately label the data within the column, and include units of measurement in the column title if applicable. Now a day most of the applications expecting data table, this table component also works as a manual table and data table. DataSource and DataColumn JSON array properties convert a table into the data table.
 
 - `<Table>`        - A table allows users to view data organized in rows and columns and in some cases perform actions on it.
 - `<TableHeader>`  - The first row of a table contains cells that act as labels for the columns..
