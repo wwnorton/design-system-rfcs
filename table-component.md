@@ -21,7 +21,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 | Name     | Type | Description                              | Required | Default     |
 | -------- | ----- | ----------------------------------- | -------- | ----------- |
-| `tableHeader` | Node | Top row component. | `false`  | `undefined` |
+| `tableHeader` | Node | Top row component. | `true`  | `undefined` |
 | `tableRow` | Node | Element defines a row of cells | `false`  | `undefined` |
 | `dataSource` | JSON | Indicates array of JSON formatted row data | `false`  | `undefined` |
 | `dataColumn` | JSON | Indicates array of JSON formatted column data | `false`  | `undefined` |
@@ -31,7 +31,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 ### JSX Example
 
-```
+```js
 <Table>
   <TableHeader>
       <TableCell>First Name</TableCell>
@@ -50,7 +50,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 #### Render Example
 
-```
+```js
 <table>  
     <thead>    
         <tr>      
@@ -73,7 +73,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 RowKey is the mapping between DataSource and DataColumn based on this mapping table convert all the json data in to rows and columns format. A cellFormatter formate cell as per the requirment.
 
-```
+```js
 [
    {
     name: "First Name",
@@ -115,7 +115,7 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 
 #### Render Example
 
-```
+```js
 <thead>    
   <tr>      
    <th></th>      
@@ -136,7 +136,7 @@ RowKey is the mapping between DataSource and DataColumn based on this mapping ta
 
 #### Render Example
 
-```
+```js
 <tr>   
     <th scope="row"></th>    
     <td></td>    
@@ -195,7 +195,7 @@ Following are the features application can adopt.
 - Existing style can be overridden using tokens.
 - Sorting enabled without zero code work by default for all the columns.
 
-    ```
+    ```js
     <Table sort>
         <TableHeader>
             <TableCell>First Name</TableCell>
@@ -214,7 +214,7 @@ Following are the features application can adopt.
 
 - Sorting can hide for specific column(s).
 
-    ```
+    ```js
         [
         {
             name: "First Name",
@@ -232,7 +232,7 @@ Following are the features application can adopt.
 - As per the application's requirements cell can be formatted using ```cellFormatter```
 - By default, all the cells values are left align but as per the column type cell values can auto align.
 
-    ```
+    ```js
         [
         {
             name: "User Name",
