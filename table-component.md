@@ -12,6 +12,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 - `<TableHeader>` - The first row of a table contains cells that act as labels for the columns..
 - `<TableRow>` - A horizontal slice of the table groups related cells.
 - `<TableCell>` - A vertical slice of the table groups cells related by the label in the header cell.
+- `<DataTable>` - A table allow user to pass data into JSON format and render it into rows and column format.
 
 ## Detailed design
 
@@ -20,9 +21,7 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 `<Table>` extends the `React.TableHTMLAttributes<HTMLTableElement>` following are properties:
 
 | Name         | Type    | Description                                                                       | Required | Default     |
-| ------------ | ------- | --------------------------------------------------------------------------------- | -------- | ----------- |
-| `dataSource` | array   | Indicates array of JSON formatted row data                                        | `false`  | []          |
-| `dataColumn` | array   | Indicates array of JSON formatted column data                                     | `false`  | []          |
+| ------------ | ------- | --------------------------------------------------------------------------------- | -------- | -----------
 | `stickyHeader` | boolean | Indicates whether the table header is sticky. | `false`  | `undefined` |
 | `className`  | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
 | `border`     | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
@@ -39,7 +38,6 @@ Table examples on line 133
 | `variant`      | variant | Define header style ghost, outline and solid. | `false`  | `solid`     |
 | `stickyHeader` | boolean | Indicates whether the table header is sticky. | `false`  | `undefined` |
 | `className`    | string  | Override or extend existing table style.      | `false`  | `undefined` |
-| `dataColumn`   | array   | Indicates array of JSON formatted column data | `false`  | []          |
 
 #### Render Example
 
@@ -73,7 +71,6 @@ const myStickyHeaderTable = ({ header }) => (
 | Name         | Type   | Description                                   | Required | Default     |
 | ------------ | ------ | --------------------------------------------- | -------- | ----------- |
 | `className`  | string | Override or extend existing table style.      | `false`  | `undefined` |
-| `dataSource` | array  | Indicates array of JSON formatted column data | `false`  | []          |
 
 #### Render Example
 
@@ -206,10 +203,21 @@ Expected output
 | Marissa    | Keep      | <Button name="button" onclick="https://wwnorton.github.io/design-system/docs/components">Click for info</Button> |
 | Andrew     | Arnold    | <Button name="button" onclick="https://wwnorton.github.io/design-system/docs/components">Click for info</Button> |
 
-### Data driven Example
+### Data Table
+
+`<DataTable>` Render JSON formatted rows and columns data internally this component is the wrapper on table component,  following are properties:
+
+| Name            | Type     | Description                                                                        | Required | Default     |
+| --------------- | -------- | ---------------------------------------------------------------------------------- | -------- | ----------- |
+| `rows` | array   | Indicates array of JSON formatted row data                                        | `true`  | []          |
+| `header` | array   | Indicates array of JSON formatted column data. | `true` | []
+| `stickyHeader` | boolean | Indicates whether the table header is sticky. | `false`  | `undefined` |
+| `className`  | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
+| `border`     | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
+| `sort`       | variant | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `asc`       |
 
 ```js
-import { Table, TableHeader } from "@wwnds/react";
+import { DataTable } from "@wwnds/react";
 
 const header = [
   /**
@@ -254,19 +262,23 @@ const rows = [
   ],
 ];
 
-// Pass header to dataColumn props and rows pass to datasource props.
+// DataTable is separate component to handle data-releated functionalities.
+// Pass header to dataColumn props and rows pass to datasource props and 
 // component convert dataColumn into header and dataSource into rows.
-const DataTable = ({ header, rows, ...options }) => (
-  <Table {...options} dataColumn={header} dataSource={rows}></Table>
+const DataTableExample = ({ header, rows, ...options }) => (
+  <DataTable {...options} header={header} rows={rows}></DataTable>
 );
 
-//
-const DataTableWithSeprateImplemetation = ({ header, rows, ...options }) => (
-  <Table {...options}>
-    <TableHeader>{header.map(headerMappingFunction)}</TableHeader>
-    {rows.map(rowMappingFunction)}
-  </Table>
+/// Internal implementation of the dataTable.
+const DataTable = ({ header, rows, ...options }) => (
+ <Table {...options}>
+  <TableHeader>
+   { header.map(headerMappingFunction) }
+  </TableHeader>
+  { rows.map(rowMappingFunction) }
+ </Table>
 );
+
 ```
 
 #### Output of Data driven example
@@ -286,7 +298,7 @@ Why should we not do this? Please consider:
 
 ## Alternatives
 
-There are many alternatives avalible but this component provide flixiblity to add datasource or datacolum without restricting any data type please check each of the examples.There is cell level customazation can format data as per the application requiments.
+There are many alternatives avalible but this component provide flixiblity to add rows or column without restricting any data type please check each of the examples.There is cell level customazation can format data as per the application requiments.
 
 - User can create manual table using simple table html tags.
 - [Ant design](https://ant.design/components/table/)
