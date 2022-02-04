@@ -32,11 +32,11 @@ A fully (externally) controlled and purely presentational component. The neither
 
 `<Step>` extends the `React.HTMLAttributes<HTMLDivElement>` and adds the following props:
 
-| Name         | Type      | Description                                          | Required | Default     |
-| ------------ | --------- | ---------------------------------------------------- | -------- | ----------- |
-| `label`      | `string`  | The label that identifies the step                   | `false`  | `undefined` |
-| `isActive`   | `boolean` | Indicates whether the user is currently on this step | `false`  | `false`     |
-| `isComplete` | `boolean` | Indicates whether the step is complete               | `false`  | `false`     |
+| Name          | Type      | Description                                          | Required | Default     |
+| ------------- | --------- | ---------------------------------------------------- | -------- | ----------- |
+| `label`       | `string`  | The label that identifies the step                   | `false`  | `undefined` |
+| `isActive`    | `boolean` | Indicates whether the user is currently on this step | `false`  | `false`     |
+| `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`  | `false`     |
 
 #### Render examples
 
@@ -44,7 +44,7 @@ A fully (externally) controlled and purely presentational component. The neither
 
 ```tsx
 <StepIndicator>
-  <Step label="Order details" isComplete />
+  <Step label="Order details" isCompleted />
   <Step label="Payment" isActive />
   <Step label="Delivery" />
 </StepIndicator>
@@ -59,13 +59,12 @@ export const OrderWizard = () => {
   return (
     <div>
       <StepIndicator>
-        <Step label="Order details" isComplete={currentStep > 0} isActive={currentStep === 0} />
-        <Step label="Payment" isComplete={currentStep > 1} isActive={currentStep === 1} />
-        <Step label="Delivery" isComplete={currentStep > 2} isActive={currentStep === 2} />
+        {stepsData.map(({ label, isCompleted, ID }) => {
+          return <Step label={label} isComplete={isCompleted} isActive={ID === currentStep} />;
+        })}
       </StepIndicator>
-      {currentStep === 0 && <div>Order details form...</div>}
-      {currentStep === 1 && <div>Payment details form...</div>}
-      {currentStep === 2 && <div>Delivery details form...</div>}
+
+      <StepBodyComponentExample data={stepsData.find(({ ID }) => currentStep === ID)} />
 
       <Button onClick={() => setCurrentStep((currentStep) => currentStep + 1)}>Continue</Button>
     </div>
@@ -89,4 +88,63 @@ Not only this only helps in a limited number of use cases at a cost of increasin
 
 ## Unresolved questions
 
-warning when only 1 Step is found as children or more than suggested (8+)?
+- warning when only 1 Step is found as children or more than suggested (8+)?
+
+- Leave all responsibility to the children or the parent (or allow both use cases)?
+
+For example, I envisioned this component as state above, where all the state is given to the children (active step, completed, etc) and the parent only acts as a simple wrapper:
+
+```tsx
+<StepIndicator>
+  <Step label="Order details" isCompleted />
+  <Step label="Payment" isActive />
+  <Step label="Delivery" />
+</StepIndicator>
+```
+
+Notice how the parent has no props and all the state is shared with the children alone through `isActive` and `isCompleted` props. I think this makes sense since in our current specification, the parent does nothing other than act as a container. Even accessibility attributes like `aria-current` is set on the active children and no help from the parent is needed
+
+Another alternative Wilmer shared with me would be to give some or all of the state to the parent and propagate it to the children internally. For example:
+
+```tsx
+<StepIndicator currentStep={currentStep}>
+  {stepsData.map(({ label, isCompleted }) => {
+    return <Step label={label} isComplete={isCompleted} />;
+  })}
+</StepIndicator>
+```
+
+I see the current step equivalent to the completed state, and having two very similar things in different places doesn't seem to right with me. Another alternative we thought of would be to give all state to the parent. At which point I don't think it's even worth having a children component (similar to the dropdown component where you give an options prop with a data structure). For example:
+
+```tsx
+export const OrderWizard = () => {
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [steps, setSteps] = useState([
+    {
+      ID: 0,
+      label: "Order details",
+      completed: true,
+    },
+    {
+      ID: 1,
+      label: "Payment",
+      completed: false,
+    },
+    {
+      ID: 2,
+      label: "Delivery",
+      completed: false,
+    },
+  ]);
+
+  return (
+    <div>
+      <StepIndicator currentStep={currentStep} steps={steps} />
+
+      <StepBodyComponentExample data={steps.find(({ ID }) => currentStep === ID)} />
+
+      <Button onClick={() => setCurrentStep((currentStep) => currentStep + 1)}>Continue</Button>
+    </div>
+  );
+};
+```
