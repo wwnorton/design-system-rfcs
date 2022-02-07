@@ -39,12 +39,12 @@ Component API designs should include at least:
 
 1. Any interface(s) that it extends, and an brief explanation of why. If it doesn't extend any interfaces, state that explicitly.
    - For example, "`<ComponentOne>` extends the `React.InputHTMLAttributes<HTMLInputElement>` interface."
-1. All props that are not part of the extended interface.
+2. All props that are not part of the extended interface.
    - If an inherited prop is customized or changed in some way, that must be included here.
    - Mention if the semantics of a prop are similar to other concepts or props used elsewhere in the design system.
-1. Required or relevant HTML or ARIA attributes such as [`disabled`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) or [`role`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles).
+3. Required or relevant HTML or ARIA attributes such as [`disabled`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) or [`role`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles).
    - Tip: closely review related [ARIA Authoring Practices](https://w3c.github.io/aria-practices/) patterns to help identify relevant semantics.
-1. Example(s) of what HTML should render. The user experiences the HTML, not the React code, so include
+4. Example(s) of what HTML should render. The user experiences the HTML, not the React code, so include
 
 For instance:
 
@@ -56,7 +56,7 @@ For instance:
 
 Alternatively, you could use TypeScript to capture all the same information in an interface or type:
 
-```tsx
+```ts
 interface ComponentOneProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /** Indicates whether the component is open. */
     isOpen?: boolean;
