@@ -1,5 +1,6 @@
 - Start Date: (fill me in with today's date, YYYY-MM-DD)
-- Specification: (fill me in with a link to the document where the component's name, description, and anatomy are defined)
+- Working documentation: (fill me in with a link to the document where the initial component's name, description, and anatomy are defined)
+- Visual design: (fill me in with a link to the visual design if it exists)
 - RFC PR: (leave this empty)
 
 ## Summary
