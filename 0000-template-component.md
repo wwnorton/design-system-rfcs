@@ -1,6 +1,5 @@
 - Start Date: (fill me in with today's date, YYYY-MM-DD)
-- Working documentation: (fill me in with a link to the document where the initial component's name, description, and anatomy are defined)
-- Visual design: (fill me in with a link to the visual design if it exists)
+- Related documents: (fill me in with any links to related documents created by the Norton design system team. for example: the visual design, Jira ticket(s), or the working documentation)
 - RFC PR: (leave this empty)
 
 ## Summary
