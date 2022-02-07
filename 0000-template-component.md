@@ -29,8 +29,9 @@ That generally means:
 - If applicable, provide sample error messages, deprecation warnings, or migration guidance.
 - If applicable, describe the differences between teaching this to experienced developers and completely new developers.
 
-**Avoid the impulse to write actual implementations or proofs of concept**.
+**Avoid the impulse to write actual implementations**.
 If you're uncertain whether something is possible to implement or how it would be implemented, say that and move on.
+Discuss with team members before writing a proof of concept to make sure you're using your time well.
 
 If your component contains more than one component, list each as sub-heads with the following structure:
 
