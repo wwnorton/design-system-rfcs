@@ -20,12 +20,12 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 `<Table>` extends the `React.TableHTMLAttributes<HTMLTableElement>` following are properties:
 
-| Name         | Type    | Description                                                                       | Required | Default     |
-| ------------ | ------- | --------------------------------------------------------------------------------- | -------- | -----------
-| `stickyHeader` | boolean | Indicates whether the table header is sticky. | `false`  | `undefined` |
-| `className`  | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
-| `border`     | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
-| `sort`       | variant | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `asc`       |
+| Name           | Type    | Description                                                                       | Required | Default     |
+| -------------- | ------- | --------------------------------------------------------------------------------- | -------- | ----------- |
+| `stickyHeader` | boolean | Indicates whether the table header is sticky.                                     | `false`  | `undefined` |
+| `className`    | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
+| `border`       | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
+| `sort`         | variant | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `asc`       |
 
 Table examples on line 133
 
@@ -47,20 +47,20 @@ Table examples on line 133
 import { Table } from "@wwnds/react";
 
 const header = [
-  {
-    name: "First name",
-    key: "first_name",
-    sort: "ascending",
-  },
-  {
-    name: "Last name",
-    key: "last_name",
-  },
+	{
+		name: "First name",
+		key: "first_name",
+		sort: "ascending",
+	},
+	{
+		name: "Last name",
+		key: "last_name",
+	},
 ];
 const myStickyHeaderTable = ({ header }) => (
-  <Table>
-    <TableHeader stickyHeader solid dataColumn={header} />
-  </Table>
+	<Table>
+		<TableHeader stickyHeader solid dataColumn={header} />
+	</Table>
 );
 ```
 
@@ -68,9 +68,9 @@ const myStickyHeaderTable = ({ header }) => (
 
 `<TableRow>` extends the `React.TableHTMLAttributes<HTMLTableRowElement>` following are properties:
 
-| Name         | Type   | Description                                   | Required | Default     |
-| ------------ | ------ | --------------------------------------------- | -------- | ----------- |
-| `className`  | string | Override or extend existing table style.      | `false`  | `undefined` |
+| Name        | Type   | Description                              | Required | Default     |
+| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
+| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
 
 #### Render Example
 
@@ -81,12 +81,12 @@ const myStickyHeaderTable = ({ header }) => (
 import { Table } from "@wwnds/react";
 const rows = ["Marissa", "Andrew"];
 const myTableWithDataColumn = ({ rows }) => (
-  <Table>
-    <TableHeader>
-      <TableCell>First Name</TableCell>
-    </TableHeader>
-    <TableRow dataSource={rows} />
-  </Table>
+	<Table>
+		<TableHeader>
+			<TableCell>First Name</TableCell>
+		</TableHeader>
+		<TableRow dataSource={rows} />
+	</Table>
 );
 ```
 
@@ -136,35 +136,35 @@ const myTableWithDifferentCellValues= () => (
 import { Table, TableHeader, TableRow, TableCell, Button } from "@wwnds/react";
 
 const employees = [
-  {
-    FirstName: "Marissa",
-    LastName: "Keep",
-  },
-  {
-    FirstName: "Andrew",
-    LastName: "Arnold",
-  },
+	{
+		FirstName: "Marissa",
+		LastName: "Keep",
+	},
+	{
+		FirstName: "Andrew",
+		LastName: "Arnold",
+	},
 ];
 
 const detailView = () => {
-  return <Button>Click for info</Button>;
+	return <Button>Click for info</Button>;
 };
 
 const myTable = ({ employees, ...options }) => (
-  <Table {...options}>
-    <TableHeader>
-      <TableCell>First Name</TableCell>
-      <TableCell>Last Name</TableCell>
-      <TableCell>Info</TableCell>
-    </TableHeader>
-    employees.map((employee)=>
-    <TableRow>
-      <TableCell>{employee.FirstName}</TableCell>
-      <TableCell>{employee.LastName}</TableCell>
-      <TableCell cellFormatter={detailView} />
-    </TableRow>
-    )
-  </Table>
+	<Table {...options}>
+		<TableHeader>
+			<TableCell>First Name</TableCell>
+			<TableCell>Last Name</TableCell>
+			<TableCell>Info</TableCell>
+		</TableHeader>
+		employees.map((employee)=>
+		<TableRow>
+			<TableCell>{employee.FirstName}</TableCell>
+			<TableCell>{employee.LastName}</TableCell>
+			<TableCell cellFormatter={detailView} />
+		</TableRow>
+		)
+	</Table>
 );
 ```
 
@@ -172,27 +172,27 @@ const myTable = ({ employees, ...options }) => (
 
 ```js
 <table>
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Info</th>
-    </tr>
-  </thead>
-  <tr>
-    <td>Marissa</td>
-    <td>Keep</td>
-    <td>
-      <Button>Click for info</Button>
-    </td>
-  </tr>
-  <tr>
-    <td>Andrew</td>
-    <td>Arnold</td>
-    <td>
-      <Button>Click for info</Button>
-    </td>
-  </tr>
+	<thead>
+		<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Info</th>
+		</tr>
+	</thead>
+	<tr>
+		<td>Marissa</td>
+		<td>Keep</td>
+		<td>
+			<Button>Click for info</Button>
+		</td>
+	</tr>
+	<tr>
+		<td>Andrew</td>
+		<td>Arnold</td>
+		<td>
+			<Button>Click for info</Button>
+		</td>
+	</tr>
 </table>
 ```
 
@@ -205,80 +205,77 @@ Expected output
 
 ### Data Table
 
-`<DataTable>` Render JSON formatted rows and columns data internally this component is the wrapper on table component,  following are properties:
+`<DataTable>` Render JSON formatted rows and columns data internally this component is the wrapper on table component, following are properties:
 
-| Name            | Type     | Description                                                                        | Required | Default     |
-| --------------- | -------- | ---------------------------------------------------------------------------------- | -------- | ----------- |
-| `rows` | array   | Indicates array of JSON formatted row data                                        | `true`  | []          |
-| `header` | array   | Indicates array of JSON formatted column data. | `true` | []
-| `stickyHeader` | boolean | Indicates whether the table header is sticky. | `false`  | `undefined` |
-| `className`  | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
-| `border`     | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
-| `sort`       | variant | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `asc`       |
+| Name           | Type    | Description                                                                       | Required | Default     |
+| -------------- | ------- | --------------------------------------------------------------------------------- | -------- | ----------- |
+| `rows`         | array   | Indicates array of JSON formatted row data                                        | `true`   | []          |
+| `header`       | array   | Indicates array of JSON formatted column data.                                    | `true`   | []          |
+| `stickyHeader` | boolean | Indicates whether the table header is sticky.                                     | `false`  | `undefined` |
+| `className`    | string  | Override or extend existing table style.                                          | `false`  | `undefined` |
+| `border`       | boolean | Indicates whether table with or without border.                                   | `false`  | `undefined` |
+| `sort`         | variant | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `asc`       |
 
 ```js
 import { DataTable } from "@wwnds/react";
 
 const header = [
-  /**
-   * Simple form: a string for the name. Internally, it's transformed
-   * into the { name, key, sort, etc. } form with all defaults and a
-   * key that's just the string in camelCase form.
-   */
-  "First name",
-  /**
-   * Complete form: a header cell can be a full object to customize
-   * things such as sorting or to use a custom key.
-   */
-  {
-    name: "Last name",
-    key: "last_name",
-    sort: "ascending",
-  },
+	/**
+	 * Simple form: a string for the name. Internally, it's transformed
+	 * into the { name, key, sort, etc. } form with all defaults and a
+	 * key that's just the string in camelCase form.
+	 */
+	"First name",
+	/**
+	 * Complete form: a header cell can be a full object to customize
+	 * things such as sorting or to use a custom key.
+	 */
+	{
+		name: "Last name",
+		key: "last_name",
+		sort: "ascending",
+	},
 ];
 
 const rows = [
-  /**
-   * Simplest form: a tuple that maps to the order of the header cells.
-   */
-  ["Marissa", "Keep"],
-  /**
-   * Object form (simple): an unordered set of key: value pairs that
-   * correspond to the keys given in the header.
-   */
-  { firstName: "Andrew", last_name: "Arnold" },
-  /**
-   * Complete form: a collection that allows you to customize some part
-   * of individual cells.
-   */
-  [
-    { key: "firstName", value: "Andrew" },
-    {
-      // key: 'lastName', // if not specified, use the position in the array?
-      value: "Arnold",
-      // give Mr. Arnold that hat with a render function!
-      cellFormatter: (cell: React.ReactNode) => <>{cell} 🎩</>,
-    },
-  ],
+	/**
+	 * Simplest form: a tuple that maps to the order of the header cells.
+	 */
+	["Marissa", "Keep"],
+	/**
+	 * Object form (simple): an unordered set of key: value pairs that
+	 * correspond to the keys given in the header.
+	 */
+	{ firstName: "Andrew", last_name: "Arnold" },
+	/**
+	 * Complete form: a collection that allows you to customize some part
+	 * of individual cells.
+	 */
+	[
+		{ key: "firstName", value: "Andrew" },
+		{
+			// key: 'lastName', // if not specified, use the position in the array?
+			value: "Arnold",
+			// give Mr. Arnold that hat with a render function!
+			cellFormatter: (cell: React.ReactNode) => <>{cell} 🎩</>,
+		},
+	],
 ];
 
 // DataTable is separate component to handle data-releated functionalities.
-// Pass header to dataColumn props and rows pass to datasource props and 
+// Pass header to dataColumn props and rows pass to datasource props and
 // component convert dataColumn into header and dataSource into rows.
 const DataTableExample = ({ header, rows, ...options }) => (
-  <DataTable {...options} header={header} rows={rows}></DataTable>
+	<DataTable {...options} header={header} rows={rows}></DataTable>
 );
 
 /// Internal implementation of the dataTable.
 const DataTable = ({ header, rows, ...options }) => (
- <Table {...options}>
-  <TableHeader>
-   { header.map(headerMappingFunction) }
-  </TableHeader>
-  { rows.map(rowMappingFunction) }
- </Table>
+	<Table {...options}>
+		<TableHeader>{header.map(headerMappingFunction)}</TableHeader>
+		{rows.map(rowMappingFunction)}
+	</Table>
 );
-
 ```
 
 #### Output of Data driven example
@@ -316,18 +313,18 @@ Following are the features application can adopt.
 
   ```js
   <Table sort>
-    <TableHeader>
-      <TableCell>First Name</TableCell>
-      <TableCell>Last Name</TableCell>
-    </TableHeader>
-    <TableRow>
-      <TableCell>Marissa</TableCell>
-      <TableCell>Keep</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>Andrew</TableCell>
-      <TableCell>Arnold</TableCell>
-    </TableRow>
+  	<TableHeader>
+  		<TableCell>First Name</TableCell>
+  		<TableCell>Last Name</TableCell>
+  	</TableHeader>
+  	<TableRow>
+  		<TableCell>Marissa</TableCell>
+  		<TableCell>Keep</TableCell>
+  	</TableRow>
+  	<TableRow>
+  		<TableCell>Andrew</TableCell>
+  		<TableCell>Arnold</TableCell>
+  	</TableRow>
   </Table>
   ```
 
@@ -335,16 +332,16 @@ Following are the features application can adopt.
 
   ```js
   [
-    {
-      name: "First Name",
-      rowKey: "firstName",
-      sort: "ascending",
-    },
-    {
-      name: "Last Name",
-      rowKey: "lastName",
-      cellFormatter: (row) => <LastNameFormatter row={row} />,
-    },
+  	{
+  		name: "First Name",
+  		rowKey: "firstName",
+  		sort: "ascending",
+  	},
+  	{
+  		name: "Last Name",
+  		rowKey: "lastName",
+  		cellFormatter: (row) => <LastNameFormatter row={row} />,
+  	},
   ];
   ```
 
@@ -353,15 +350,15 @@ Following are the features application can adopt.
 
   ```js
   [
-    {
-      name: "User Name",
-      rowKey: "userName",
-    },
-    {
-      name: "Experience",
-      rowKey: "exp",
-      type: "number", // This column is right align.
-    },
+  	{
+  		name: "User Name",
+  		rowKey: "userName",
+  	},
+  	{
+  		name: "Experience",
+  		rowKey: "exp",
+  		type: "number", // This column is right align.
+  	},
   ];
   ```
 
