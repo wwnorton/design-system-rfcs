@@ -4,6 +4,10 @@ Many changes, including bug fixes and documentation improvements can be implemen
 
 The "RFC" (request for comments) process is intended to provide a consistent and controlled path for new features to enter the design system, so that all stakeholders can be confidence about its direction.
 
+> **An RFC document is not documentation**.
+> This process is intended to shape an idea into something that's ready to implement, not to document the idea or create a specification.
+> Please refer to https://github.com/wwnorton/design-system for design system documentation.
+
 ## When to follow this process
 
 You should follow this process if you intend to make "substantial" changes to the [@wwnds/core](https://github.com/wwnorton/design-system/tree/main/packages/core) or the [@wwnds/react](https://github.com/wwnorton/design-system/tree/main/packages/react) packages in [the Norton Design System](https://github.com/wwnorton/design-system).
