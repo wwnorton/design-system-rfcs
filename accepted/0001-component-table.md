@@ -1,6 +1,6 @@
 - Start Date: 2021-10-01
-- Specification: ([Table](https://docs.google.com/document/d/1YPO3KZNZkY3amEK2xtpSND4ajHXzms_FrTwZ3TQWnWw/edit))
-- Design: ([Table](https://app.zeplin.io/project/5d66e28439bbe3139aa846ad/screen/6148d737ee5b5557ca49792c))
+- Working documentation: [Google Docs - Table](https://docs.google.com/document/d/1YPO3KZNZkY3amEK2xtpSND4ajHXzms_FrTwZ3TQWnWw/edit)
+- Visual design: [Zeplin - Table](https://app.zeplin.io/project/5d66e28439bbe3139aa846ad/screen/6148d737ee5b5557ca49792c)
 - RFC PR: https://github.com/wwnorton/design-system-rfcs/pull/2
 
 ## Summary
