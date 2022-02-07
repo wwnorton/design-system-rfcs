@@ -22,7 +22,7 @@ The information shared to the user includes:
 
 ## Detailed design
 
-A fully (externally) controlled and purely presentational component. The neither the `StepIndicator` or `Step` components handle any sort of state management or event dispatching (other than those inherited from `<div>`'s like onClick). The parent component is responsible of keeping track of each individual steps, this component solely responsibility is to present said states and other information (labels, etc) to the user
+A fully (externally) controlled and purely presentational component. Neither the `StepIndicator` nor the `Step` components handle any sort of state management or event dispatching (other than those inherited from `<div>`'s like onClick). The parent component is responsible of keeping track of each individual steps. This component is solely responsibility for presenting said states and other information (labels, etc) to the user.
 
 ### StepIndicator
 
