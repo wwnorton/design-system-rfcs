@@ -18,15 +18,15 @@ The information shared to the user includes:
 
 ### Sub components
 
-- `<Step>` - a visible step with a completed/uncompleted state, a label and an active/inactive state
+- `<Step>` - a visible step with a completed/uncompleted state, a label and a current state
 
 ## Detailed design
 
-A fully (externally) controlled and purely presentational component. Neither the `StepIndicator` nor the `Step` components handle any sort of state management or event dispatching (other than those inherited from `<div>`'s like onClick). The parent component is responsible of keeping track of each individual steps. This component is solely responsibility for presenting said states and other information (labels, etc) to the user.
+A fully (externally) controlled and purely presentational component. Neither the `StepIndicator` nor the `Step` components handle any sort of state management or event dispatching. The parent component is responsible of keeping track of each individual steps. This component is solely responsibility for presenting said states and other information (labels, etc) to the user.
 
 ### StepIndicator
 
-`<StepIndicator>` extends the `React.HTMLAttributes<HTMLDivElement>` without adding any new props, it acts as a simple container
+`<StepIndicator>` extends the `React.OlHTMLAttributes<HTMLOListElement>` without adding any new props, it acts as a simple container with accessibility attributes like `aria-label="Steps"`
 
 ### Step
 
@@ -35,22 +35,22 @@ A fully (externally) controlled and purely presentational component. Neither the
 | Name          | Type      | Description                                          | Required | Default     |
 | ------------- | --------- | ---------------------------------------------------- | -------- | ----------- |
 | `label`       | `string`  | The label that identifies the step                   | `false`  | `undefined` |
-| `isActive`    | `boolean` | Indicates whether the user is currently on this step | `false`  | `false`     |
+| `isCurrent`   | `boolean` | Indicates whether the user is currently on this step | `false`  | `false`     |
 | `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`  | `false`     |
 
-#### Render examples
+### Render examples
 
-##### Simple usage
+#### Simple usage
 
 ```tsx
 <StepIndicator>
   <Step label="Order details" isCompleted />
-  <Step label="Payment" isActive />
+  <Step label="Payment" isCurrent />
   <Step label="Delivery" />
 </StepIndicator>
 ```
 
-##### With simple state management
+#### With simple state management
 
 ```tsx
 export const OrderWizard = () => {
@@ -60,16 +60,86 @@ export const OrderWizard = () => {
     <div>
       <StepIndicator>
         {stepsData.map(({ label, isCompleted, ID }) => {
-          return <Step label={label} isComplete={isCompleted} isActive={ID === currentStep} />;
+          return (
+            <Step
+              label={label}
+              isComplete={isCompleted}
+              isCurrent={ID === currentStep}
+            />
+          );
         })}
       </StepIndicator>
 
-      <StepBodyComponentExample data={stepsData.find(({ ID }) => currentStep === ID)} />
+      <StepBodyComponentExample
+        data={stepsData.find(({ ID }) => currentStep === ID)}
+      />
 
-      <Button onClick={() => setCurrentStep((currentStep) => currentStep + 1)}>Continue</Button>
+      <Button onClick={() => setCurrentStep((currentStep) => currentStep + 1)}>
+        Continue
+      </Button>
     </div>
   );
 };
+```
+
+#### Simple example of final rendered HTML
+
+```tsx
+<ol aria-label="Steps">
+  <li>
+    <svg aria-label="completed" />
+    Order details
+  </li>
+  <li aria-current="step">
+    <svg aria-label="incomplete" />
+    Payment
+  </li>
+  <li>
+    <svg aria-label="incomplete" />
+    Delivery
+  </li>
+</ol>
+```
+
+In reality, in order to add the connector lines some dummy `<div/>`'s might be necessary, for example:
+
+```tsx
+<ol aria-label="Steps">
+  <li>
+    <div>
+      <div classname="connector" />
+      <svg aria-label="completed" />
+      <div classname="connector" />
+    </div>
+    <div>Order details</div>
+  </li>
+  <li>
+    <div>
+      <div classname="connector" />
+      <svg aria-label="incomplete" />
+      <div classname="connector" />
+    </div>
+    <div>Delivery</div>
+  </li>
+</ol>
+```
+
+First and last connectors can be easily hidden with some simple css child selectors:
+
+```scss
+.step {
+  &:first-child {
+    .connector:first-child {
+      display: none;
+    }
+  }
+
+  &:last-child {
+    .connector:last-child {
+      display: none;
+    }
+  }
+}
 ```
 
 ## Drawbacks
@@ -86,65 +156,4 @@ Not only this only helps in a limited number of use cases at a cost of increasin
 
 ## Adoption strategy
 
-## Unresolved questions
-
-- warning when only 1 Step is found as children or more than suggested (8+)?
-
-- Leave all responsibility to the children or the parent (or allow both use cases)?
-
-For example, I envisioned this component as state above, where all the state is given to the children (active step, completed, etc) and the parent only acts as a simple wrapper:
-
-```tsx
-<StepIndicator>
-  <Step label="Order details" isCompleted />
-  <Step label="Payment" isActive />
-  <Step label="Delivery" />
-</StepIndicator>
-```
-
-Notice how the parent has no props and all the state is shared with the children alone through `isActive` and `isCompleted` props. I think this makes sense since in our current specification, the parent does nothing other than act as a container. Even accessibility attributes like `aria-current` is set on the active children and no help from the parent is needed
-
-Another alternative Wilmer shared with me would be to give some or all of the state to the parent and propagate it to the children internally. For example:
-
-```tsx
-<StepIndicator currentStep={currentStep}>
-  {stepsData.map(({ label, isCompleted }) => {
-    return <Step label={label} isComplete={isCompleted} />;
-  })}
-</StepIndicator>
-```
-
-I see the current step equivalent to the completed state, and having two very similar things in different places doesn't seem to right with me. Another alternative we thought of would be to give all state to the parent. At which point I don't think it's even worth having a children component (similar to the dropdown component where you give an options prop with a data structure). For example:
-
-```tsx
-export const OrderWizard = () => {
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const [steps, setSteps] = useState([
-    {
-      ID: 0,
-      label: "Order details",
-      completed: true,
-    },
-    {
-      ID: 1,
-      label: "Payment",
-      completed: false,
-    },
-    {
-      ID: 2,
-      label: "Delivery",
-      completed: false,
-    },
-  ]);
-
-  return (
-    <div>
-      <StepIndicator currentStep={currentStep} steps={steps} />
-
-      <StepBodyComponentExample data={steps.find(({ ID }) => currentStep === ID)} />
-
-      <Button onClick={() => setCurrentStep((currentStep) => currentStep + 1)}>Continue</Button>
-    </div>
-  );
-};
-```
+Applications that desire a visual design different to the one we ship would need to make use of the exposed design tokens to suit the component to their needs
