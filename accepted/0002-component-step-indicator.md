@@ -32,11 +32,11 @@ A fully (externally) controlled and purely presentational component. Neither the
 
 `<Step>` extends the `React.HTMLAttributes<HTMLDivElement>` and adds the following props:
 
-| Name          | Type      | Description                                          | Required | Default     |
-| ------------- | --------- | ---------------------------------------------------- | -------- | ----------- |
-| `label`       | `string`  | The label that identifies the step                   | `false`  | `undefined` |
-| `isCurrent`   | `boolean` | Indicates whether the user is currently on this step | `false`  | `false`     |
-| `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`  | `false`     |
+| Name          | Type      | Description                                          | Required                           | Default |
+| ------------- | --------- | ---------------------------------------------------- | ---------------------------------- | ------- | ----------- |
+| `children`    | `string   | ReactNode`                                           | The label that identifies the step | `false` | `undefined` |
+| `isCurrent`   | `boolean` | Indicates whether the user is currently on this step | `false`                            | `false` |
+| `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`                            | `false` |
 
 ### Render examples
 
@@ -141,6 +141,20 @@ First and last connectors can be easily hidden with some simple css child select
   }
 }
 ```
+
+### Design Tokens
+
+To allow for customization to suit different project and context usages, the component will expose a series of scss tokens used to change the visuals
+
+| Token Name                              | Description                                                                         | Default          |
+| --------------------------------------- | ----------------------------------------------------------------------------------- | ---------------- |
+| `--nds-stepindicator-accent-color`      | The color for currently active step markers                                         | `primary-color`  |
+| `--nds-stepindicator-base-color`        | The base color for non-current step markers                                         | `disabled-color` |
+| `--nds-stepindicator-connector-color`   | The color for the connector line between steps                                      | `disabled-color` |
+| `--nds-stepindicator-step-marker-size`  | The width and height of the marker circle                                           | `1.75rem`        |
+| `--nds-stepindicator-step-border-width` | Border width for steps that are both incomplete and inactive                        | `spacing-2px`    |
+| `--nds-stepindicator-connector-color`   | The color for the connector line between steps                                      | `disabled-color` |
+| `--nds-stepindicator-max-step-width`    | Max-width for the specific steps, can be useful when the number of steps is dynamic | `unset`          |
 
 ## Drawbacks
 
