@@ -32,11 +32,10 @@ A fully (externally) controlled and purely presentational component. Neither the
 
 `<Step>` extends the `React.HTMLAttributes<HTMLDivElement>` and adds the following props:
 
-| Name          | Type      | Description                                          | Required                           | Default |
-| ------------- | --------- | ---------------------------------------------------- | ---------------------------------- | ------- | ----------- |
-| `children`    | `string   | ReactNode`                                           | The label that identifies the step | `false` | `undefined` |
-| `isCurrent`   | `boolean` | Indicates whether the user is currently on this step | `false`                            | `false` |
-| `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`                            | `false` |
+| Name          | Type      | Description                                          | Required | Default |
+| ------------- | --------- | ---------------------------------------------------- | -------- | ------- |
+| `isCurrent`   | `boolean` | Indicates whether the user is currently on this step | `false`  | `false` |
+| `isCompleted` | `boolean` | Indicates whether the step is complete               | `false`  | `false` |
 
 ### Render examples
 
@@ -44,9 +43,11 @@ A fully (externally) controlled and purely presentational component. Neither the
 
 ```tsx
 <StepIndicator>
-  <Step label="Order details" isCompleted />
-  <Step label="Payment" isCurrent />
-  <Step label="Delivery" />
+  <Step isCompleted>
+    <strong>Order</strong> details
+  </Step>
+  <Step isCurrent>Payment</Step>
+  <Step>Delivery</Step>
 </StepIndicator>
 ```
 
@@ -61,11 +62,9 @@ export const OrderWizard = () => {
       <StepIndicator>
         {stepsData.map(({ label, isCompleted, ID }) => {
           return (
-            <Step
-              label={label}
-              isComplete={isCompleted}
-              isCurrent={ID === currentStep}
-            />
+            <Step isComplete={isCompleted} isCurrent={ID === currentStep}>
+              {label}
+            </Step>
           );
         })}
       </StepIndicator>
@@ -146,15 +145,14 @@ First and last connectors can be easily hidden with some simple css child select
 
 To allow for customization to suit different project and context usages, the component will expose a series of scss tokens used to change the visuals
 
-| Token Name                              | Description                                                                         | Default          |
-| --------------------------------------- | ----------------------------------------------------------------------------------- | ---------------- |
-| `--nds-stepindicator-accent-color`      | The color for currently active step markers                                         | `primary-color`  |
-| `--nds-stepindicator-base-color`        | The base color for non-current step markers                                         | `disabled-color` |
-| `--nds-stepindicator-connector-color`   | The color for the connector line between steps                                      | `disabled-color` |
-| `--nds-stepindicator-step-marker-size`  | The width and height of the marker circle                                           | `1.75rem`        |
-| `--nds-stepindicator-step-border-width` | Border width for steps that are both incomplete and inactive                        | `spacing-2px`    |
-| `--nds-stepindicator-connector-color`   | The color for the connector line between steps                                      | `disabled-color` |
-| `--nds-stepindicator-max-step-width`    | Max-width for the specific steps, can be useful when the number of steps is dynamic | `unset`          |
+| Token Name                             | Description                                                                         | Default         |
+| -------------------------------------- | ----------------------------------------------------------------------------------- | --------------- |
+| `--nds-stepindicator-current-color`    | The color for the currently active step marker halo                                 | `primary-color` |
+| `--nds-stepindicator-completed-color`  | The background color for completed step markers                                     | `primary-color` |
+| `--nds-stepindicator-base-color`       | The background base color for incomplete step markers                               | `base-color-90` |
+| `--nds-stepindicator-connector-color`  | The color for the connector line between steps                                      | `base-color-90` |
+| `--nds-stepindicator-step-marker-size` | The width and height of the step marker circle                                      | `1.75rem`       |
+| `--nds-stepindicator-max-step-width`   | Max-width for the specific steps, can be useful when the number of steps is dynamic | `null`          |
 
 ## Drawbacks
 
