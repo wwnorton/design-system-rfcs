@@ -145,14 +145,13 @@ First and last connectors can be easily hidden with some simple css child select
 
 To allow for customization to suit different project and context usages, the component will expose a series of scss tokens used to change the visuals
 
-| Token Name                             | Description                                                                         | Default         |
-| -------------------------------------- | ----------------------------------------------------------------------------------- | --------------- |
-| `--nds-stepindicator-current-color`    | The color for the currently active step marker halo                                 | `primary-color` |
-| `--nds-stepindicator-completed-color`  | The background color for completed step markers                                     | `primary-color` |
-| `--nds-stepindicator-base-color`       | The background base color for incomplete step markers                               | `base-color-90` |
-| `--nds-stepindicator-connector-color`  | The color for the connector line between steps                                      | `base-color-90` |
-| `--nds-stepindicator-step-marker-size` | The width and height of the step marker circle                                      | `1.75rem`       |
-| `--nds-stepindicator-max-step-width`   | Max-width for the specific steps, can be useful when the number of steps is dynamic | `null`          |
+| Token Name                             | Description                                                                               | Default         |
+| -------------------------------------- | ----------------------------------------------------------------------------------------- | --------------- |
+| `--nds-stepindicator-primary-color`    | The color for the currently active step marker halo and the background of completed steps | `primary-color` |
+| `--nds-stepindicator-base-color`       | The background base color for incomplete step markers and connector line                  | `base-color-90` |
+| `--nds-stepindicator-show-connector`   | Boolean on whether or not to show a connector between the step markers                    | `true`          |
+| `--nds-stepindicator-step-marker-size` | The width and height of the (non-current) step markers circle                             | `1.75rem`       |
+| `--nds-stepindicator-max-step-width`   | Max-width for the specific steps, can be useful when the number of steps is dynamic       | `null`          |
 
 ## Drawbacks
 
