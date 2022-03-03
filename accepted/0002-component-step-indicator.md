@@ -1,7 +1,10 @@
 - Start Date: 2022/01/31
-- Specification: [ACs](https://wwnorton1.sharepoint.com/:w:/g/DP/products_and_projects/nds/EYaT6DU_L9dJgpDUAm0brj0BTyXTdFEpfNOhvmPsaYnK_A?e=mpeK98) / [Spec](https://docs.google.com/document/d/1Km1st0VA-rEBiSStirv7iwhyyJu8QiKz_3PwkfTwFMw)
-- Design: [Step Indicator](https://zpl.io/a7prL4q)
-- RFC PR:
+- Related documents:
+   - [acceptance criteria](https://wwnorton1.sharepoint.com/:w:/g/DP/products_and_projects/nds/EYaT6DU_L9dJgpDUAm0brj0BTyXTdFEpfNOhvmPsaYnK_A?e=mpeK98)
+   - [documentation draft](https://docs.google.com/document/d/1Km1st0VA-rEBiSStirv7iwhyyJu8QiKz_3PwkfTwFMw)
+   - [visual design](https://zpl.io/a7prL4q)
+   - [names, states, and properties](https://wwnorton.atlassian.net/browse/NDS-153)
+- RFC PR: https://github.com/wwnorton/design-system-rfcs/pull/4
 
 ## Summary
 
