@@ -44,6 +44,8 @@
 
 - Simpler API
 - More complex implementation? The panel content is passed as children to the Tab component but it can be placed at a higher level in the DOM tree using Portals
+- Used by ant-design https://codesandbox.io/s/dmkw8l
+- Since the label is a string prop, adding icons is not as intuitive and flexible as having the label be the children. We could use the same API used in the button component for handling icon and icon position (`icon`, `iconRight`, `iconOnly` as props for the `Tab` component)
 
 ### API option 2: a specific "TabPanel" component, only related to the Tab component by an ID
 
@@ -62,7 +64,8 @@
 ```
 
 - One more component TabPanel
-- I can't see how an uncontrolled/unmanaged version could be implemented, current active tab status must be handled by the parent. Mui uses this API and they don't offer an uncontrolled version (they offer uncontrolled versions for most of their components)
+- I can't see how an uncontrolled/unmanaged version could be easily implemented without mayor changes, current active tab state must be handled by the parent. Could be done by adding a wrapper component that could distribute the state data downwards maybe using the context API or by using cloneElement to inject state props (I prefer staying away from cloneElement if possible)
+- Mui uses this API and they don't offer an uncontrolled version (they offer uncontrolled versions for most of their components)
 - More flexible API, the Tabs component is so detached that could be used differently like having the tab selector below the content
 
 ### Simple example of final rendered HTML
