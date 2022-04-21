@@ -11,6 +11,13 @@
 
 A list of tab headers is displayed using the `TabList` and `Tab` components, allowing the user to interact and select the tab content they want to see. The contents of each tab is contained in a `TabPanel` component, all wrapped within a `TabPanels` container.
 
+## Definitions
+
+- `Controlled/uncontrolled or managed/unmanaged state`: The only state this component is interested in is which tab is the currently selected one. The controlled/uncontrolled distinction is about _who_ is responsible for managing this state.
+  - Controlled means that the parent (the component invoking the `Tabs` component) is responsible of managing this state, this way the user can **control the state however they want**. In order to use the component in controlled mode, the user must provide `selectedIndex` and `onChange` props to the `Tabs` component.
+  - Uncontrolled means that the state is managed internally by the `Tabs` component, the parent does not need to provide any specific props and **can't control the state**. In uncontrolled mode, the only thing that the parent can control is the default state for the initial render, this is done through the optional `defaultSelectedIndex` prop.
+- `Position index`: this refers to the position of a component relative to their parent. If they are the first child their position index would be 0, if they are the second it would be 1 and so on.
+
 ### Sub components
 
 - `<Tabs>` - The highest-order wrapper that contains all the other sub-components. Handles data management and distribution across it's children
@@ -23,46 +30,52 @@ A list of tab headers is displayed using the `TabList` and `Tab` components, all
 
 A stateful component with both uncontrolled and controlled versions (state managed internally / state managed externally).
 
-The only state managed by this component is the currently active section of content, identified by its index. `Tab` components must be in order with its corresponding `TabPanel`s in order to assure that the `Tab` buttons activate the correct section of content
+The only state needed by this component is the currently active section of content, identified by its index. `Tab` components must be in order with its corresponding `TabPanel`s in order to assure that the `Tab` buttons activate the correct section of content
 
 ### Tabs
 
 `<Tabs>` extends the `React.ComponentPropsWithRef<'div'>` interface and adds the following props:
 
-| Name           | Type                                                         | Description                                                                                                                    | Required | Default     |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------- | ----------- |
-| `value`        | `number`                                                     | The currently active tab, for controlled use only                                                                              | `false`  | `undefined` |
-| `onChange`     | `(payload: { value: number; contents: ReactNode; }) => void` | Callback for when the user interacts with one of the `Tab` buttons                                                             | `false`  | 0           |
-| `initialValue` | `number`                                                     | Sets the default value for the currently active tab, for uncontrolled use only. Will be ignored if the `value` prop is defined | `false`  | `undefined` |
+| Name                   | Type                              | Description                                                                                                          | Required | Default     |
+| ---------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| `selectedIndex`        | `number`                          | The currently active tab, for controlled use only                                                                    | `false`  | `undefined` |
+| `onChange`             | `(selectedIndex: number) => void` | Callback for when the user interacts with one of the `Tab` buttons, will pass the position index of the selected tab | `false`  | `undefined` |
+| `defaultSelectedIndex` | `number`                          | Sets the default active tab, for uncontrolled use only. Will be ignored if the `selectedIndex` prop is defined       | `false`  | 0           |
 
 ### TabList
 
-`<TabList>` extends the `React.ComponentPropsWithRef<'div'>` interface with a `role="tablist"` attribute.
+`<TabList>` extends the `React.ComponentPropsWithRef<'div'>` interface with a `role="tablist"` attribute. A simple wrapper for the `Tab` components.
 
 ### Tab
 
-`<Tab>` extends the `React.ComponentPropsWithRef<'button'>` interface with `role="tab"`, `aria-selected="true/false"` and `aria-controls="tab-ID"` (an autogenerated unique prefix might be needed to support the case were there are multiple tab components rendered at the same time and share tab names) attributes. The values for `aria-selected` and `aria-controls` should be calculated using the state delivered by the `Tabs` wrapper
+`<Tab>` extends the `React.ComponentPropsWithRef<'button'>` interface.
 
-| Name    | Type        | Description                                                                                                                                                      | Required | Default     |
-| ------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| `value` | `React.Key` | An unique key to identify this `Tab`, must be the same as the value provided to its corresponding `TabPanel`. If unset, the children position index will be used | `false`  | `undefined` |
+The `Tab` component is responsible for rendering a `button` with the following (auto generated, the user does not need to provide these through props) attributes:
+
+- `type="button"`
+- `role="tab"`
+- `aria-selected`: `true` if this `Tab` refers to the currently active tab panel, else `false`
+- `aria-controls`: The value must be the `id` of the corresponding `TabPanel` this `Tab` controls. For example `tab-0` if this is the `Tab` with position index 0
+- `id`: The value must be unique and will be referred to in the corresponding `TabPanel` through the `aria-labelledby` attribute. For example `tab-header-0` if this is the `Tab` with position index 0
 
 ### TabPanels
 
-`<TabPanels>` extends the `React.ComponentPropsWithRef<'div'>` interface.
+`<TabPanels>` extends the `React.ComponentPropsWithRef<'div'>` interface. A simple wrapper for the `TabPanel` components.
 
 ### TabPanel
 
-`<TabPanel>` extends the `React.ComponentPropsWithRef<'div'>` interface with `role="tabpanel"` and an `id` attributes.
+`<TabPanel>` extends the `React.ComponentPropsWithRef<'div'>` interface with `role="tabpanel"` and an autogenerated `id` attributes.
 
-| Name    | Type        | Description                                                                                                                                                      | Required | Default     |
-| ------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| `value` | `React.Key` | An unique key to identify this `TabPanel`, must be the same as the value provided to its corresponding `Tab`. If unset, the children position index will be used | `false`  | `undefined` |
+The `TabPanel` component is responsible for rendering a `div` with the following (auto generated, the user does not need to provide these through props) attributes:
+
+- `role="tabpanel"`
+- `aria-labelledby`: The value must be the `id` of the corresponding `Tab` this `TabPanel` is controlled by. For example `tab-header-0` if this is the `TabPanel` with position index 0
+- `id`: The value must be unique and will be referred to in the corresponding `Tab` through the `aria-controls` attribute. For example `tab-0` if this is the `TabPanel` with position index 0
 
 ### Simple Usage - Uncontrolled/State managed internally
 
 ```tsx
-<Tabs initialValue={2}>
+<Tabs defaultSelectedIndex={2}>
   <TabList>
     <Tab>Cats</Tab>
     <Tab>Dogs</Tab>
@@ -79,7 +92,7 @@ The only state managed by this component is the currently active section of cont
 ### Simple Usage - Controlled/State managed externally
 
 ```tsx
-<Tabs value={activeTabindex} onChange={handleActiveTabChange}>
+<Tabs selectedIndex={selectedTabIndex} onChange={handleSelectedTabIndexChange}>
   <TabList>
     <Tab>Cats</Tab>
     <Tab>Dogs</Tab>
@@ -96,13 +109,13 @@ The only state managed by this component is the currently active section of cont
 ### Simple example of final rendered HTML
 
 ```tsx
-<div role="tablist" aria-label="animals">
+<div role="tablist">
   <button
     type="button"
     role="tab"
     aria-selected="true"
-    aria-controls="cats-tab"
-    id="cats"
+    aria-controls="tab-0"
+    id="tab-header-0"
   >
     Cats
   </button>
@@ -110,8 +123,8 @@ The only state managed by this component is the currently active section of cont
     type="button"
     role="tab"
     aria-selected="false"
-    aria-controls="dogs-tab"
-    id="dogs"
+    aria-controls="tab-1"
+    id="tab-header-1"
   >
     Dogs
   </button>
@@ -119,20 +132,20 @@ The only state managed by this component is the currently active section of cont
     type="button"
     role="tab"
     aria-selected="false"
-    aria-controls="horses-tab"
-    id="horses"
+    aria-controls="tab-2"
+    id="tab-header-2"
   >
     Horses
   </button>
 
   <div className="panel-container">
-    <div id="cats-tab" role="tabpanel" aria-labelledby="cats">
+    <div id="tab-0" role="tabpanel" aria-labelledby="tab-header-0">
       Cats content
     </div>
-    <div id="dogs-tab" role="tabpanel" aria-labelledby="dogs" hidden="">
+    <div id="tab-1" role="tabpanel" aria-labelledby="tab-header-1" hidden="">
       Dogs content
     </div>
-    <div id="horses-tab" role="tabpanel" aria-labelledby="horses" hidden="">
+    <div id="tab-2" role="tabpanel" aria-labelledby="tab-header-2" hidden="">
       Horses content
     </div>
   </div>
@@ -159,9 +172,10 @@ Ant-design uses a simpler and more minimalistic API, which combines the `Tab` an
 
 ## Unresolved questions
 
-- We need a way to identify each `Tab` and relate it to its corresponding `TabPanel`. This is needed to keep track of currently active tab and setting the `aria-controls` attribute
+- We need a way to identify each `Tab` and relate it to its corresponding `TabPanel`. This is needed in order to calculate the `aria-controls`, `aria-labelledby` and `id` attributes for the `Tab` and `TabPanel` components
+- Calculate these `id`s in a way that multiple tabs can be rendered in the same page at the same time and ensure the `id`s remain unique
 
 We can:
 
-1. Force the user to provide a `value: React.Key` prop to each `Tab` and `TabPanel` (expecting the key to be equal for corresponding tab/tabPanel pairs) and use that
-2. Make it optional, and when none is provided, fallback to the children position index. Both the `TabList` and `TabPanels` parents will most likely need to iterate over its children props and check whether they have a `value` prop or not and inject its corresponding index as `value` if needed
+1. Using the solution from NDS-22, generate an UUID to use as prefix for every `id`, that way we ensure that they are unique. For example a `Tab` would generate an `id="123autogenerated-tab-header-0"` for position index 0 and its corresponding `TabPanel` would have `id="123autogenerated-tab-0`, `aria-labelledby="123autogenerated-tab-header-0"`
+2. Don't use autogenerated UUIDs (in order to not depend on NDS-22) and ask the developer to manually give the parent `Tabs` component an unique `id` and use that as prefix. For example `<Tabs id="myAnimalsTabbedPanel" />` would generate `id="myAnimalsTabbedPanel-tab-header-0"`. As long as the developer doesn't give multiple `Tabs` the same `id` we can be sure that the generated `id`s will be unique
