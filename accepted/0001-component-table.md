@@ -38,9 +38,10 @@ The `TableData` object allows to define the data of the table where we don't car
 
 `TableHeaderData` object properties:
 
-| Name      | Type      | Description                                | Required | Default |
-| --------- | --------- | ------------------------------------------ | -------- | ------- |
-| `element` | ReactNode | The element to render inside the data cell | `true`   | ---     |
+| Name      | Type      | Description                                                                            | Required | Default     |
+| --------- | --------- | -------------------------------------------------------------------------------------- | -------- | ----------- |
+| `element` | ReactNode | The element to render inside the data cell                                             | `true`   | ---         |
+| `sorter`  | Function  | Used for Uncontrolled Sorting, overrides the default sorting function for this column. | `false`  | `undefined` |
 
 `TableCellData` object properties:
 
@@ -152,9 +153,11 @@ function TableExample() {
 
 `<TableHeaderCell>` extends the `React.TableHTMLAttributes<HTMLTableHeaderCellElement>` following are properties:
 
-| Name        | Type   | Description                              | Required | Default     |
-| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
-| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
+| Name        | Type                           | Description                                                                            | Required | Default     |
+| ----------- | ------------------------------ | -------------------------------------------------------------------------------------- | -------- | ----------- |
+| `className` | string                         | Override or extend existing table style.                                               | `false`  | `undefined` |
+| `sorter`    | Function                       | Used for Uncontrolled Sorting, overrides the default sorting function for this column. | `false`  | `undefined` |
+| `sorted`    | `'asc'`, `'desc'`, `undefined` | Used for Controlled Sorting, defines the current sort state of the column.             | `false`  | `undefined` |
 
 #### TableBody
 
@@ -182,7 +185,166 @@ function TableExample() {
 
 ### Sorting
 
-This is TBD
+Sorting is enabled by setting the prop `sortable` to `true`. More controls are given to the sorting functionality and they are described in the sections below.
+
+#### Uncontrolled Sorting using the `data` prop
+
+The most basic example is as follows:
+
+```js
+import { Table } from "@wwnds/react";
+
+const data = [
+  // ... data is defined here
+];
+
+function TableExample() {
+  return <Table sortable data={data} />;
+}
+```
+
+The **default** sorting function uses JS comparison operators, so the [coercion rules for comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality#description) apply when 2 values aren't of the same type, all values in a column **SHOULD** be of the same type. To override the sorting function for a column, define the `sorter` property in the `TableHeaderData` object:
+
+```js
+import { Table } from "@wwnds/react";
+
+const data = [
+  {
+    headers: [
+      {
+        element: "First Name",
+        sorter: (a, b) => {
+          // ... custom sorting logic
+        },
+      },
+      // ... other headers
+    ],
+    rows: [
+      // ... rows are defined here
+    ],
+  },
+];
+
+function TableExample() {
+  return <Table data={data} />;
+}
+```
+
+#### Uncontrolled Sorting using the composition pattern
+
+The most basic example is as follows:
+
+```js
+import { Table } from "@wwnds/react";
+
+function TableExample() {
+	return (
+		<Table sortable>
+			<TableHeader>
+				<TableHeaderCell>First Name</TableCell>
+				{/* ... other header cells */}
+			</TableHeader>
+			<TableBody>
+                                {/* ... rows */}
+			</TableBody>
+		</Table>
+
+	)
+}
+```
+
+The **default** sorting function uses JS comparison operators, so the [coercion rules for comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality#description) apply when 2 values aren't of the same type, all values in a column **SHOULD** be of the same type. To override the sorting function for a column, define the `sorter` prop in the `TableHeaderCell` component:
+
+```js
+import { Table } from "@wwnds/react";
+
+function TableExample() {
+	return (
+		<Table sortable>
+			<TableHeader>
+				<TableHeaderCell sorter={(a, b) => { /* ... custom sorting */ }}>First Name</TableCell>
+				{/* ... other header cells */}
+			</TableHeader>
+			<TableBody>
+                                {/* ... rows */}
+			</TableBody>
+		</Table>
+
+	)
+}
+```
+
+#### Controlled Sorting using the `data` prop
+
+The most basic example is as follows:
+
+```js
+import { Table } from "@wwnds/react";
+
+const data = [
+    headers: [
+      {
+        element: "First Name",
+        sorted: "asc",
+      },
+      {
+        element: "Last Name",
+        sorted: "desc",
+      },
+      {
+        element: "Age",
+      },
+    ],
+    // rows
+];
+
+function TableExample() {
+  return (
+    <Table
+      sortable
+      onSort={(columnIndex, direction) => {
+        /* your custom logic */
+      }}
+      data={data}
+    />
+  );
+}
+```
+
+In `data.headers` the `sorted` property specifies the 3 possible states for the column: _ascending_, _descending_, or _default_ sorting. This will affect the way the sort indicator (button) is displayed.
+
+Since this is the controlled approach, the sorting of the rows is 100% responsibility of the application.
+
+The `onSort` callback is called when the user clicks on a sortable header. The callback receives the `columnIndex` as defined in `data.headers` and the `direction` of the sort `asc`, `desc`, or `default`.
+
+#### Controlled Sorting using the composition pattern
+
+The most basic example is as follows:
+
+```js
+import { Table } from "@wwnds/react";
+
+function TableExample() {
+	return (
+		<Table sortable onSort={(columnIndex, order) => { /* custom sorting logic */ }}>
+			<TableHeader>
+				<TableHeaderCell sorted="asc">First Name</TableCell>
+				{/* ... other header cells */}
+			</TableHeader>
+			<TableBody>
+                                {/* ... rows */}
+			</TableBody>
+		</Table>
+
+	)
+}
+```
+
+In `TableHeaderCell` the `sorted` property specifies the 3 possible states for the column: _ascending_, _descending_, or _default_ sorting. This will affect the way the sort indicator (button) is displayed.
+
+Since this is the controlled approach, the sorting of the rows is 100% responsibility of the application.
+
+The `onSort` callback is called when the user clicks on a sortable header. The callback receives the `columnIndex` as defined in `data.headers` and the `direction` of the sort `asc`, `desc`, or `default`.
 
 ## Drawbacks
 
