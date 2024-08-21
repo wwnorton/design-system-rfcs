@@ -20,35 +20,85 @@ Tables must have at least 2 columns.Column titles in the header row should be as
 
 `<Table>` extends the `React.TableHTMLAttributes<HTMLTableElement>` following are properties:
 
-| Name           | Type      | Description                                                                       | Required | Default     |
-| -------------- | --------- | --------------------------------------------------------------------------------- | -------- | ----------- |
-| `stickyHeader` | boolean   | Indicates whether the table header is sticky.                                     | `false`  | `undefined` |
-| `className`    | string    | Override or extend existing table style.                                          | `false`  | `undefined` |
-| `border`       | boolean   | Indicates whether table with or without border.                                   | `false`  | `undefined` |
-| `sortable`     | boolean   | Sortable header maintain current sort state, which can be asc, desc, or unsorted. | `false`  | `undefined` |
-| `variant`      | variant   | Define header style ghost, outline and solid.                                     | `false`  | `solid`     |
-| `data`         | TableData | Data to be rendered in the table.                                                 | `false`  | `undefined` |
+```typescript
+interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
+  /**
+   * Indicates whether the table header is sticky.
+   */
+  stickyHeader?: boolean;
+
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
+
+  /**
+   * Indicates whether table with or without border.
+   */
+  hasBorder?: boolean;
+
+  /**
+   * Used to enable sorting in the table.
+   * For Uncontrolled Sorting, this activates the internal sorting state of the Table component.
+   * For Controlled Sorting, this just renders the buttons in the headers that will call `onSort`.
+   */
+  isSortable?: boolean;
+
+  /**
+   * Used for Controlled Sorting. When set, the Table component will not manage the sorting state.
+   * `onSort` is called when the user clicks on one of the column sorting buttons. It receives
+   * the `columnIndex` and the `direction` of the sort `asc`, `desc`, or `default`.
+   */
+  onSort?: (columnIndex: number, direction: "asc" | "desc" | undefined) => void;
+
+  /**
+   * Define header style ghost, outline and solid.
+   *
+   * @default 'solid'
+   */
+  variant?: "ghost" | "outline" | "solid";
+
+  /**
+   * The data to be rendered in the table.
+   */
+  data?: TableData;
+}
+```
 
 The `TableData` object allows to define the data of the table where we don't care about its structure and the default structure can be used. This object is made of the following properties:
 
-| Name      | Type                        | Description                       | Required | Default |
-| --------- | --------------------------- | --------------------------------- | -------- | ------- |
-| `headers` | Array<TableHeaderData>      | The data that defined the headers | `true`   | ---     |
-| `rows`    | Array<Array<TableCellData>> | The data that defined the rows    | `true`   | ---     |
+```typescript
+interface TableData {
+  headers: TableDataHeader[];
+  rows: TableDataCell[][];
+}
 
-`TableHeaderData` object properties:
+type SortableValue = string | number | boolean;
 
-| Name      | Type      | Description                                                                            | Required | Default     |
-| --------- | --------- | -------------------------------------------------------------------------------------- | -------- | ----------- |
-| `element` | ReactNode | The element to render inside the data cell                                             | `true`   | ---         |
-| `sorter`  | Function  | Used for Uncontrolled Sorting, overrides the default sorting function for this column. | `false`  | `undefined` |
+interface TableDataHeader {
+  /**
+   * The element to render inside the data cell
+   */
+  children: ReactNode;
 
-`TableCellData` object properties:
+  /**
+   * Used for Uncontrolled Sorting, overrides the default sorting function for this column.
+   */
+  sorter?: (a: SortableValue, b: SortableValue) => void;
+}
 
-| Name      | Type                    | Description                                             | Required | Default     |
-| --------- | ----------------------- | ------------------------------------------------------- | -------- | ----------- |
-| `value`   | string, boolean, number | The value of the cell                                   | `true`   | ---         |
-| `wrapper` | ReactComponent          | The react component used to wrap the value to render it | `false`  | `undefined` |
+interface TableDataCell {
+  /**
+   * The value of the cell
+   */
+  value: SortableValue;
+
+  /**
+   * The react component used to wrap the value to render it
+   */
+  wrapper?: (value: SortableValue) => ReactNode;
+}
+```
 
 #### Render Example
 
@@ -61,47 +111,45 @@ function YearWrapper({ value }) {
   return <span>{value} years</span>;
 }
 
-const data = [
-  {
-    headers: [
+const data = {
+  headers: [
+    {
+      element: "First Name",
+    },
+    {
+      element: "Last Name",
+    },
+    {
+      element: "Age",
+    },
+  ],
+  rows: [
+    [
       {
-        element: "First Name",
+        value: "Marissa",
       },
       {
-        element: "Last Name",
+        value: "Keep",
       },
       {
-        element: "Age",
+        value: 25,
+        wrapper: (value) => <YearWrapper value={value} />,
       },
     ],
-    rows: [
-      [
-        {
-          value: "Marissa",
-        },
-        {
-          value: "Keep",
-        },
-        {
-          value: 25,
-          wrapper: YearWrapper,
-        },
-      ],
-      [
-        {
-          value: "Andrew",
-        },
-        {
-          value: "Arnold",
-        },
-        {
-          value: 31,
-          wrapper: YearWrapper,
-        },
-      ],
+    [
+      {
+        value: "Andrew",
+      },
+      {
+        value: "Arnold",
+      },
+      {
+        value: 31,
+        wrapper: (value) => <YearWrapper value={value} />,
+      },
     ],
-  },
-];
+  ],
+};
 
 function TableExample() {
   return <Table data={data} />;
@@ -143,49 +191,119 @@ function TableExample() {
 
 #### TableHeader
 
-`<TableHeader>` extends the `React.TableHTMLAttributes<HTMLTableSectionElement>` following are properties:
-
-| Name        | Type   | Description                              | Required | Default     |
-| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
-| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
+```typescript
+interface TableHeaderProps
+  extends React.TableHTMLAttributes<HTMLTableSectionElement> {
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
+}
+```
 
 #### TableHeaderCell
 
-`<TableHeaderCell>` extends the `React.TableHTMLAttributes<HTMLTableHeaderCellElement>` following are properties:
+```typescript
+interface TableHeaderCellProps
+  extends React.TableHTMLAttributes<HTMLTableHeaderCellElement> {
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
 
-| Name        | Type                           | Description                                                                            | Required | Default     |
-| ----------- | ------------------------------ | -------------------------------------------------------------------------------------- | -------- | ----------- |
-| `className` | string                         | Override or extend existing table style.                                               | `false`  | `undefined` |
-| `sorter`    | Function                       | Used for Uncontrolled Sorting, overrides the default sorting function for this column. | `false`  | `undefined` |
-| `sorted`    | `'asc'`, `'desc'`, `undefined` | Used for Controlled Sorting, defines the current sort state of the column.             | `false`  | `undefined` |
+  /**
+   * Used for Uncontrolled Sorting, overrides the default sorting function for this column.
+   */
+  sorter?: (a: SortableValue, b: SortableValue) => void;
+
+  /**
+   * Used for Controlled Sorting, defines the current sort state of the column.
+   */
+  sorted?: "asc" | "desc" | undefined;
+}
+```
 
 #### TableBody
 
-`<TableBody>` extends the `React.TableHTMLAttributes<HTMLTableSectionElement>` following are properties:
-
-| Name        | Type   | Description                              | Required | Default     |
-| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
-| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
+```typescript
+interface TableBodyProps
+  extends React.TableHTMLAttributes<HTMLTableSectionElement> {
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
+}
+```
 
 #### TableRow
 
-`<TableRow>` extends the `React.TableHTMLAttributes<HTMLTableRowElement>` following are properties:
-
-| Name        | Type   | Description                              | Required | Default     |
-| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
-| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
+```typescript
+interface TableRowProps extends React.TableHTMLAttributes<HTMLTableRowElement> {
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
+}
+```
 
 #### TableCell
 
-`<TableCell>` extends the `React.TableHTMLAttributes<HTMLTableCellElement>` following are properties:
+```typescript
+interface TableCellProps
+  extends React.TableHTMLAttributes<HTMLTableCellElement> {
+  /**
+   * Override or extend existing table style.
+   */
+  className?: string;
 
-| Name        | Type   | Description                              | Required | Default     |
-| ----------- | ------ | ---------------------------------------- | -------- | ----------- |
-| `className` | string | Override or extend existing table style. | `false`  | `undefined` |
+  /**
+   * The value of the cell.
+   * In uncontrolled sorting the value is used to sort the column. If none is defined
+   * the text content of the cell is used as value.
+   */
+  value?: SortableValue;
+}
+```
 
 ### Sorting
 
-Sorting is enabled by setting the prop `sortable` to `true`. More controls are given to the sorting functionality and they are described in the sections below.
+Sorting is enabled by setting the prop `sortable` to `true`.
+
+By default, **Sorting is Uncontrolled** and the Table component will manage the internal state.
+
+**Controlled Sorting** can be enabled by passing a callback as the `onSort` prop. This will disable the internal sorting state of the Table component. All sorting of the `data` will then be the responsibility of the application.
+
+#### Default Sorting Function for Uncontrolled Sorting
+
+It's defined as:
+
+```js
+function defaultSorter(a, b) {
+  let direction;
+  switch (sorted) {
+    case "asc":
+      direction = 1;
+      break;
+    case "desc":
+      direction = -1;
+    default:
+      direction = 0;
+  }
+
+  if (!direction) {
+    return 0;
+  }
+
+  if (a < b) {
+    return -1 * direction;
+  }
+  if (a > b) {
+    return 1 * direction;
+  }
+
+  return 0 * direction;
+}
+```
 
 #### Uncontrolled Sorting using the `data` prop
 
@@ -194,36 +312,34 @@ The most basic example is as follows:
 ```js
 import { Table } from "@wwnds/react";
 
-const data = [
+const data = {
   // ... data is defined here
-];
+};
 
 function TableExample() {
-  return <Table sortable data={data} />;
+  return <Table isSortable data={data} />;
 }
 ```
 
-The **default** sorting function uses JS comparison operators, so the [coercion rules for comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality#description) apply when 2 values aren't of the same type, all values in a column **SHOULD** be of the same type. To override the sorting function for a column, define the `sorter` property in the `TableHeaderData` object:
+To override the Default Sorting Function for a column:
 
 ```js
 import { Table } from "@wwnds/react";
 
-const data = [
-  {
-    headers: [
-      {
-        element: "First Name",
-        sorter: (a, b) => {
-          // ... custom sorting logic
-        },
+const data = {
+  headers: [
+    {
+      element: "First Name",
+      sorter: (a, b) => {
+        // ... custom sorting logic
       },
-      // ... other headers
-    ],
-    rows: [
-      // ... rows are defined here
-    ],
-  },
-];
+    },
+    // ... other headers
+  ],
+  rows: [
+    // ... rows are defined here
+  ],
+};
 
 function TableExample() {
   return <Table data={data} />;
@@ -242,10 +358,17 @@ function TableExample() {
 		<Table sortable>
 			<TableHeader>
 				<TableHeaderCell>First Name</TableCell>
-				{/* ... other header cells */}
+				<TableHeaderCell>Last Name</TableCell>
+				<TableHeaderCell>Age</TableCell>
+				<TableHeaderCell>Goals</TableCell>
 			</TableHeader>
 			<TableBody>
-                                {/* ... rows */}
+				<TableRow>
+                                  <TableCell>Andrew</TableCell>
+                                  <TableCell>Arnold</TableCell>
+                                  <TableCell value={31}>31 Years</TableCell>
+                                  <TableCell value={5}>5</TableCell>
+				</TableRow>
 			</TableBody>
 		</Table>
 
@@ -253,7 +376,9 @@ function TableExample() {
 }
 ```
 
-The **default** sorting function uses JS comparison operators, so the [coercion rules for comparison](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality#description) apply when 2 values aren't of the same type, all values in a column **SHOULD** be of the same type. To override the sorting function for a column, define the `sorter` prop in the `TableHeaderCell` component:
+`TableCell` allows to define a `value` prop to be used by the internal sorting algorithm to the sort values in the column. This is not requried and if not passed, the component uses the text content of the cell. This means that if `value` is not defined, the type of the value will _ALWAYS_ be string.
+
+To override the default sorting function for a column:
 
 ```js
 import { Table } from "@wwnds/react";
@@ -281,22 +406,22 @@ The most basic example is as follows:
 ```js
 import { Table } from "@wwnds/react";
 
-const data = [
-    headers: [
-      {
-        element: "First Name",
-        sorted: "asc",
-      },
-      {
-        element: "Last Name",
-        sorted: "desc",
-      },
-      {
-        element: "Age",
-      },
-    ],
-    // rows
-];
+const data = {
+  headers: [
+    {
+      element: "First Name",
+      sorted: "asc",
+    },
+    {
+      element: "Last Name",
+      sorted: "desc",
+    },
+    {
+      element: "Age",
+    },
+  ],
+  // rows
+};
 
 function TableExample() {
   return (
@@ -326,7 +451,7 @@ import { Table } from "@wwnds/react";
 
 function TableExample() {
 	return (
-		<Table sortable onSort={(columnIndex, order) => { /* custom sorting logic */ }}>
+		<Table isSortable onSort={(columnIndex, order) => { /* custom sorting logic */ }}>
 			<TableHeader>
 				<TableHeaderCell sorted="asc">First Name</TableCell>
 				{/* ... other header cells */}
@@ -335,7 +460,6 @@ function TableExample() {
                                 {/* ... rows */}
 			</TableBody>
 		</Table>
-
 	)
 }
 ```
@@ -353,3 +477,5 @@ The `onSort` callback is called when the user clicks on a sortable header. The c
 ## Adoption strategy
 
 ## Unresolved questions
+
+- How to enforce typing of values in the same column? Should we enforce it? Can we provide a helper type for the data object?
